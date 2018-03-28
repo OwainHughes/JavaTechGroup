@@ -22,7 +22,7 @@ VALUES
 ('17','gaeaf','winter','male'),
 ('18','coffi','coffee','male'),
 ('19','cwrw','beer','male'),
-('20','maneg','gloive','female'),
+('20','maneg','glove','female'),
 ('21','aur','gold','male'),
 ('22','pasg','easter','male'),
 ('23','nadolig','christmas','male'),
@@ -37,4 +37,5 @@ VALUES
 
 INSERT INTO users
 VALUES
-(1,'admin1','@12345','ADMINISTRATOR');
+(1,'admin1','@12345','ADMINISTRATOR'),
+(2,'eeu89a','abc','STUDENT');
