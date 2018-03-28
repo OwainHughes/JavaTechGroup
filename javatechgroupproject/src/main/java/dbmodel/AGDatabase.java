@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -32,10 +33,10 @@ public class AGDatabase {
     }
     
     /**
-     * Prints the specified table
+     * Returns HTML for a specific table
      * @param table
      */
-    public ResultSet queryTable(String table)
+    public String getTableHTML(String table)
     {
         ResultSet rs = null;
         
@@ -48,7 +49,7 @@ public class AGDatabase {
                 Statement stat = conn.createStatement();
                 rs = stat.executeQuery("SELECT * FROM "+table);
 
-                return rs;
+                return printTable(rs);
                 //print table
                 //printTable(rs);
             } 
@@ -61,7 +62,51 @@ public class AGDatabase {
                 Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return rs;
+        return "fail";
+    }
+    
+    /**
+     * Formats a ResultSet as a HTML table
+     * @param rs the results set
+     * @throws SQLException 
+     */
+    private String printTable(ResultSet rs) throws SQLException
+    {
+        //get metadata
+        ResultSetMetaData md = rs.getMetaData();
+
+        //get number of columns
+        int columnCount = md.getColumnCount();
+        
+        String table = "<table>";
+        
+        table+=("<tr>");
+        
+        //print column headers
+        for(int i=1; i <= columnCount; i++) 
+        {
+            if (i > 1)
+            table+= ("<th>"+md.getColumnLabel(i)+"</th>");
+        }
+        
+        table+=("</tr>");
+        
+        //loop to print the table
+        while (rs.next())
+        {
+            table+=("<tr>");
+            //dynamically adjusts according to number of columns in metadata
+            for(int i=1; i <= columnCount; i++) 
+            {
+                if (i > 1)
+                table+=("<th>"+rs.getString(i)+"</th>");
+            }
+            table+=("</tr>");                 
+        }
+        
+        table+="<table>";
+        
+        return table;
     }
     
 }

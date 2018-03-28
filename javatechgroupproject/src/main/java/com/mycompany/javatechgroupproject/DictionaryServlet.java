@@ -5,8 +5,13 @@
  */
 package com.mycompany.javatechgroupproject;
 
+import dbmodel.AGDatabase;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,19 +34,7 @@ public class DictionaryServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DictionaryServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DictionaryServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+            //do do
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -62,10 +55,18 @@ public class DictionaryServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Dictionary</title>");         
+            out.println("<title>Servlet DictionaryServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Hello world!</h1>");
+            out.println("<h1>Servlet DictionaryServlet at " + request.getContextPath() + "</h1>");
+            
+            try {
+                AGDatabase db = new AGDatabase();
+                out.println(db.getTableHTML("dictionary"));
+            
+            } catch (ClassNotFoundException ex) {
+                out.println("CLASS ERROR");
+            }
             out.println("</body>");
             out.println("</html>");
         }
