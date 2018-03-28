@@ -109,4 +109,29 @@ public class AGDatabase {
         return table;
     }
     
+     public String QueryLogin(String userName, String password)
+    {
+        ResultSet rs = null;
+        String resultString = "";
+        try {
+            Connection conn = SimpleDataSource.getConnection();
+            try {
+                Statement stat = conn.createStatement();
+                rs = stat.executeQuery("SELECT Role FROM Users" 
+                        + " WHERE Username = " + userName + "AND Password = " + password);
+                        
+                resultString = rs.getString(0);
+                
+            }
+            finally
+            {
+                conn.close();
+            }           
+        } catch (SQLException ex) {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return resultString;
+    }
+    
 }
