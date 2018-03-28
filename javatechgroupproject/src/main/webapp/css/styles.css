@@ -1,0 +1,53 @@
+.tabGUI{
+    z-index: 1;
+	margin: auto;
+	width : 85%;
+	font-size: 20px;
+	color : gray;
+	margin-top: 4%;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    text-align: left;
+    padding: 8px !important;
+}
+
+th{
+     background-color: #ad3636;
+     color : white;
+}
+
+tr:nth-child(even) {
+    background-color:#e3e3e3;
+}
+
+tr:nth-child(odd) {
+    background-color:whitesmoke;
+}
+
+.glyphicon{
+	margin-left:10%;
+	font-size: 35px;
+}
+
+.glyphicon-edit{
+	color:#b17328;
+}
+
+.glyphicon-remove-sign{
+	color:#b70606;
+}
+
+.addButton{
+        border:none;
+        padding:10px;
+        background-color: #5b985b;
+        color:white;
+        margin-bottom:3%;
+}
