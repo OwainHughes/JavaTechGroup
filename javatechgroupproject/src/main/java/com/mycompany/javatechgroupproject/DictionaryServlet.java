@@ -55,11 +55,15 @@ public class DictionaryServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DictionaryServlet</title>");            
+            out.println("<title>Servlet DictionaryServlet</title>");  
+            out.println("<link href=\"/webapp/lib/css/style.css\" type=\"text/css\" rel=\"stylesheet\"/>");
+            out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"></link>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet DictionaryServlet at " + request.getContextPath() + "</h1>");
             
+            out.println("<div class=\"tabGUI\">");
+            out.println("<button type=\"submit\" class=\"addButton\">Add new Word</button>");
             try {
                 AGDatabase db = new AGDatabase();
                 out.println(db.getTableHTML("dictionary"));
@@ -67,6 +71,7 @@ public class DictionaryServlet extends HttpServlet {
             } catch (ClassNotFoundException ex) {
                 out.println("CLASS ERROR");
             }
+            out.println("</div>");
             out.println("</body>");
             out.println("</html>");
         }

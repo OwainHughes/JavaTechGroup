@@ -89,6 +89,8 @@ public class AGDatabase {
             table+= ("<th>"+md.getColumnLabel(i)+"</th>");
         }
         
+        table+= ("<th>Actions</th>");
+        
         table+=("</tr>");
         
         //loop to print the table
@@ -99,9 +101,11 @@ public class AGDatabase {
             for(int i=1; i <= columnCount; i++) 
             {
                 if (i > 1)
-                table+=("<th>"+rs.getString(i)+"</th>");
+                table+=("<td>"+rs.getString(i)+"</td>");
             }
-            table+=("</tr>");                 
+            table+=("<td><span class=\"glyphicon glyphicon glyphicon-edit\">");
+            table+=("</span><span class=\"glyphicon glyphicon-remove-sign\"></span></td>");
+            table+=("</tr>");             
         }
         
         table+="<table>";
