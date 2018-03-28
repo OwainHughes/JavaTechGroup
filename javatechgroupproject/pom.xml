@@ -131,7 +131,7 @@
                 <properties>
                     <jdbc.url>jdbc:mysql://den1.mysql5.gear.host/javatechdb</jdbc.url>
                     <jdbc.username>javatechdb</jdbc.username>
-                    <jdbc.password>Ro8MDc8w!36-	</jdbc.password>
+                    <jdbc.password>Ro8MDc8w!36- </jdbc.password>
                     <jdbc.driver>com.mysql.jdbc.Driver</jdbc.driver>
                 </properties>
         </profile>
