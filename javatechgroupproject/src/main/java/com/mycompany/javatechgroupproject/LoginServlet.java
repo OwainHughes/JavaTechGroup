@@ -33,18 +33,24 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response,
                                 String userName, String role)
             throws ServletException, IOException {
+        String reply = "";
+        if(role.equals("NoRole"))
+        {
+            reply = "Incorrect username or password";
+        }
+        else
+        {
+            reply = userName + " Role:" + role;
+        }
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            
-            
+        try (PrintWriter out = response.getWriter()) {           
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet LoginServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>User:" + userName + "Role:" + role + "</h1>");
+            out.println("<h1>User:" + reply + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,8 +81,8 @@ public class LoginServlet extends HttpServlet {
             System.out.println("User Role = " + role);            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        processRequest(request, response, userName, role);*/
+        }*/
+        processRequest(request, response, "wrong method", "Still Wrong");
     }
 
     /**
@@ -90,6 +96,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
         String role = "";
@@ -98,9 +106,8 @@ public class LoginServlet extends HttpServlet {
             //if so grab user roll
             AGDatabase dbConn  = new AGDatabase();
             
-            role = dbConn.QueryLogin(userName, password);
-            
-            System.out.println("User Role = " + role);            
+            role = dbConn.QueryLogin(userName, password);            
+                       
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }

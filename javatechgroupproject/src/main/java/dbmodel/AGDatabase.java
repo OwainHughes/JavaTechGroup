@@ -112,15 +112,17 @@ public class AGDatabase {
      public String QueryLogin(String userName, String password)
     {
         ResultSet rs = null;
-        String resultString = "";
+        String resultString = "NoRole";
         try {
             Connection conn = SimpleDataSource.getConnection();
             try {
                 Statement stat = conn.createStatement();
-                rs = stat.executeQuery("SELECT Role FROM Users" 
-                        + " WHERE Username = " + userName + "AND Password = " + password);
-                        
-                resultString = rs.getString(0);
+                rs = stat.executeQuery("SELECT Role FROM users" 
+                        + " WHERE username = '" + userName + "' AND passwords = '" + password + "';");
+            while(rs.next()) 
+            {
+                resultString = rs.getString(1);
+            }
                 
             }
             finally
