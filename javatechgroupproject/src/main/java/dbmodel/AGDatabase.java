@@ -8,6 +8,7 @@ package dbmodel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -38,7 +39,38 @@ public class AGDatabase {
      */
     public String getTableHTML(String table)
     {
-        ResultSet rs = null;
+
+        try{
+             //create variables
+            Connection conn = SimpleDataSource.getConnection();
+
+            //get resultset from database
+            try {
+                Statement stat = conn.createStatement();
+                ResultSet rs = stat.executeQuery("SELECT * FROM "+table);
+
+                return printTable(rs);
+                //print table
+                //printTable(rs);
+            } 
+            finally
+            {
+                conn.close();
+            }
+        }
+        catch (SQLException ex) {
+                Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "fail";
+    }
+    
+    /**
+     * Returns HTML for a specific table, sorted by a specific column
+     * @param table
+     */
+    public String getTableHTML(String table, String sortingColumn)
+    {
         
         try{
              //create variables
@@ -47,11 +79,9 @@ public class AGDatabase {
             //get resultset from database
             try {
                 Statement stat = conn.createStatement();
-                rs = stat.executeQuery("SELECT * FROM "+table);
+                ResultSet rs = stat.executeQuery("SELECT * FROM "+table+" ORDER BY "+sortingColumn+" ASC");
 
                 return printTable(rs);
-                //print table
-                //printTable(rs);
             } 
             finally
             {
@@ -85,27 +115,28 @@ public class AGDatabase {
         //print column headers
         for(int i=1; i <= columnCount; i++) 
         {
-            if (i > 1)
+            //if (i > 1)
             table+= ("<th>"+md.getColumnLabel(i)+"</th>");
         }
         
-        table+= ("<th>Actions</th>");
+        table+= ("<th class=\"actions\">Actions</th>");
         
         table+=("</tr>");
+        
         
         //loop to print the table
         while (rs.next())
         {
-            table+=("<tr>");
+            table+=("<tr id=\"row"+rs.getString("dictionary_id")+"\">");
             //dynamically adjusts according to number of columns in metadata
-            for(int i=1; i <= columnCount; i++) 
+            for(int i=1; i <= columnCount; i++)
             {
-                if (i > 1)
+                //if (i > 1)
                 table+=("<td>"+rs.getString(i)+"</td>");
             }
-            table+=("<td><span class=\"glyphicon glyphicon glyphicon-edit\">");
+            table+=("<td class=\"actions\"><span class=\"glyphicon glyphicon glyphicon-edit\" data-toggle=\"modal\" data-target=\"#editModal\">");
             table+=("</span><span class=\"glyphicon glyphicon-remove-sign\"></span></td>");
-            table+=("</tr>");             
+            table+=("</tr>");
         }
         
         table+="<table>";
@@ -113,7 +144,13 @@ public class AGDatabase {
         return table;
     }
     
-     public String QueryLogin(String userName, String password)
+    /**
+     * Function to check username and password credentials.
+     * @param userName
+     * @param password
+     * @return 
+     */
+    public String QueryLogin(String userName, String password)
     {
         ResultSet rs = null;
         String resultString = "NoRole";
@@ -138,6 +175,80 @@ public class AGDatabase {
         }
         
         return resultString;
+    }
+    
+    /**
+     * Inserts a new word into the database.
+     * @param welshword
+     * @param englishword
+     * @param gender 
+     */
+    public void addWord(String welshword, String englishword, String gender)
+    {
+        try{
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+        
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement(
+                    "INSERT INTO dictionary(welsh_word, english_word, gender)"
+                            + " VALUES(?,?,?);");
+
+                //add parameters specified by user
+                pstat.setString(1, welshword);
+                pstat.setString(2, englishword);
+                pstat.setString(3, gender);
+
+                //print table
+                pstat.executeUpdate();
+                
+            }
+            finally{
+                conn.close();
+            }
+        }
+        catch (SQLException ex){
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * Updates a table in the database with specified parameters.
+     * @param table the table to update
+     * @param idColumn column name used to identify row(s)
+     * @param idValue value used to specify a row
+     * @param updateField field to update
+     * @param updateValue new value to replace old value in database.
+     */
+    public void updateTable(String table, String idColumn, String idValue, String updateField, String updateValue)
+    {
+        try{
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+        
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement("UPDATE "+table+" SET "+updateField+" = ? WHERE "+idColumn+" = ?");
+
+                //add parameters specified by user
+                pstat.setString(1, updateValue);
+                pstat.setString(2, idValue);
+
+                //update table
+                pstat.executeUpdate();
+                System.out.println(pstat.toString());
+
+            }
+            finally{
+                conn.close();
+            }
+        }
+        catch (SQLException ex){
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

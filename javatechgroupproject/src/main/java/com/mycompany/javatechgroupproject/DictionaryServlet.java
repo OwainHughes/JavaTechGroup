@@ -57,16 +57,87 @@ public class DictionaryServlet extends HttpServlet {
             out.println("<head>");
             out.println("<title>Servlet DictionaryServlet</title>");  
             out.println("<link href=\"css/styles.css\" type=\"text/css\" rel=\"stylesheet\"/>");
+            out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>");
+            out.println("<script src=\"js/javascript.js\"></script>");
+            out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>");
             out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"></link>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet DictionaryServlet at " + request.getContextPath() + "</h1>");
             
             out.println("<div class=\"tabGUI\">");
-            out.println("<button type=\"submit\" class=\"addButton\">Add new Word</button>");
+            
+            
+            //print the add modal form.
+            out.println("<div class=\"modal fade\" id=\"addModal\" role=\"dialog\" style=\"display: none;\">\n" +
+                    "    <div class=\"modal-dialog\">\n" +
+            "    \n" +
+            "      \n" +
+            "      <div class=\"modal-content\">\n" +
+            "        <div class=\"modal-header\">\n" +
+            "          <button type=\"button\" class=\"close\" data-dismiss=\"modal\">×</button>\n" +
+            "          <h4 class=\"modal-title\">Add Word</h4>\n" +
+            "        </div>\n" +
+            "        <div class=\"modal-body\">\n" +
+            "          <form action=\"LoginServlet\" method=\"POST\"><br><label>Welsh Word:</label>\n" +
+            "<br>\n" +
+            "                <input id=\"wwInput\" type=\"text\" name=\"welsh_word\">\n" +
+            "                <br><br><label>English Word:</label><br>\n" +
+            "                <input id=\"ewInput\" type=\"text\" name=\"english_word\">\n" +
+            "                <br><br><label>Gender:</label>\n" +
+            "                <br>\n" +
+            "                \n" +
+            "<input type=\"radio\" name=\"gender\" value=\"male\">Male<br><input type=\"radio\" name=\"gender\" value=\"female\">Female\n" +
+            "                <br><br>\n" +
+            "                \n" +
+            "            </form>\n" +
+            "        </div>\n" +
+            "        <div class=\"modal-footer\">\n" +
+            "          <button id=\"addWordDB\" type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Save</button>\n" +
+            "          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Cancel</button>\n" +
+            "        </div>\n" +
+            "      </div>\n" +
+            "      \n" +
+            "    </div>\n" +
+            "  </div>");
+            
+            //print the edit modal
+            out.println("<div class=\"modal fade\" id=\"editModal\" role=\"dialog\" style=\"display: none;\">\n" +
+            "    <div class=\"modal-dialog\">\n" +
+            "    \n" +
+            "      \n" +
+            "      <div class=\"modal-content\">\n" +
+            "        <div class=\"modal-header\">\n" +
+            "          <button type=\"button\" class=\"close\" data-dismiss=\"modal\">×</button>\n" +
+            "          <h4 class=\"modal-title\">Edit Word</h4>\n" +
+            "        </div>\n" +
+            "        <div class=\"modal-body\">\n" +
+            "          <form action=\"LoginServlet\" method=\"POST\"><br><label>Welsh Word:</label>\n" +
+            "<br>\n" +
+            "                <input id=\"wwEdit\" type=\"text\" name=\"welsh_word\">\n" +
+            "                <br><br><label>English Word:</label><br>\n" +
+            "                <input id=\"ewEdit\" type=\"text\" name=\"english_word\">\n" +
+            "                <br><br><label>Gender:</label>\n" +
+            "                <br>\n" +
+            "                \n" +
+            "<input type=\"radio\" name=\"genderEdit\" value=\"male\">Male<br><input type=\"radio\" name=\"genderEdit\" value=\"female\">Female\n" +
+            "                <br><br>\n" +
+            "                \n" +
+            "            </form>\n" +
+            "        </div>\n" +
+            "        <div class=\"modal-footer\">\n" +
+            "          <button id=\"editWordDB\" type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Save Changes</button>\n" +
+            "          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Cancel</button>\n" +
+            "        </div>\n" +
+            "      </div>\n" +
+            "      \n" +
+            "    </div>\n" +
+            "  </div>");
+            
+            out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\">Add new word</button>");
             try {
                 AGDatabase db = new AGDatabase();
-                out.println(db.getTableHTML("dictionary"));
+                out.println(db.getTableHTML("dictionary","welsh_word"));
             
             } catch (ClassNotFoundException ex) {
                 out.println("CLASS ERROR");

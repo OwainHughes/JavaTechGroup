@@ -8,6 +8,14 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.mycompany.javatechgroupproject.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddWordServlet</servlet-name>
+        <servlet-class>com.mycompany.javatechgroupproject.AddWordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditWordServlet</servlet-name>
+        <servlet-class>com.mycompany.javatechgroupproject.EditWordServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DictionaryServlet</servlet-name>
         <url-pattern>/DictionaryServlet</url-pattern>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddWordServlet</servlet-name>
+        <url-pattern>/AddWordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditWordServlet</servlet-name>
+        <url-pattern>/EditWordServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

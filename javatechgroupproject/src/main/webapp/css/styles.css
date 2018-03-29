@@ -5,6 +5,7 @@
 	font-size: 20px;
 	color : gray;
 	margin-top: 4%;
+	margin-bottom:8%;
 }
 
 table {
@@ -37,8 +38,13 @@ tr:nth-child(odd) {
 }
 
 .glyphicon-edit{
-	color:#b17328;
+	color:#e46f1c;
 }
+
+td:hover > .glyphicon-edit{
+	color:#ff9245;
+}
+
 
 .glyphicon-remove-sign{
 	color:#b70606;
@@ -50,4 +56,29 @@ tr:nth-child(odd) {
         background-color: #5b985b;
         color:white;
         margin-bottom:3%;
+}
+
+.actions{
+	text-align:center;
+}
+
+form>input[type=text]{
+	margin-bottom: 5%;
+	width:100%;
+}
+
+form>label{
+	color: black;
+	font-weight:bold;
+	margin-bottom:1%
+}
+
+#addModal .modal-header{
+	background-color:#5b985b;
+	color:white;
+}
+
+#editModal .modal-header{
+	background-color:#e46f1c;
+	color:white;
 }
