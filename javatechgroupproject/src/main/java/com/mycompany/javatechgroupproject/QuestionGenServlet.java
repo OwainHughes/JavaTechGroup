@@ -66,7 +66,7 @@ public class QuestionGenServlet extends HttpServlet {
         try {
             AGDatabase dbConn = new AGDatabase();
             ArrayList<Word> wordList = new ArrayList<Word>();
-            wordList = dbConn.getWordList();
+            wordList = dbConn.getWordsList();
             Random rand = new Random();
             
             response.setContentType("text/html;charset=UTF-8");
