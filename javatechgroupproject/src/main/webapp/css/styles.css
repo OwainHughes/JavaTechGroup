@@ -34,29 +34,29 @@ tr:nth-child(odd) {
 
 .glyphicon{
 	margin-left:10%;
-	font-size: 35px;
-}
-
-.glyphicon-edit{
-	color:#e46f1c;
-}
-
-td:hover > .glyphicon-edit{
-	color:#ff9245;
+	font-size: 25px;
 }
 
 .editIcon{
-	margin-left:15%;
+	color:#e46f1c;
+	margin-left:25%;
 	float:left;
 }
 
-.deleteIcon{
-	margin-right:15%;
-	float:right;
+div.editIcon:hover > .glyphicon-edit{
+	color:#ff9245;
+        cursor:pointer;
 }
 
-.glyphicon-remove-sign{
+.deleteIcon{
+	margin-right:25%;
+	float:right;
 	color:#b70606;
+}
+
+div.deleteIcon:hover {
+	color:red;
+        cursor:pointer;
 }
 
 span:hover > .glyphicon-remove-sign{
@@ -73,8 +73,7 @@ span:hover > .glyphicon-remove-sign{
 }
 
 .addButton:hover {
-    background-color: #2179ef;
-	
+    background-color: #97cc97;
 	
 }
 
@@ -83,9 +82,14 @@ span:hover > .glyphicon-remove-sign{
 	text-align:center;
 }
 
-form>input[type=text]{
+form>input[type=text],form>input[type=password]{
 	margin-bottom: 5%;
 	width:100%;
+}
+
+select{
+	width:100%;
+	padding:7px;
 }
 
 form>label{

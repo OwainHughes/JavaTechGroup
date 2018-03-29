@@ -130,21 +130,58 @@ public class AGDatabase {
         //loop to print the table
         while (rs.next())
         {
-            table+=("<tr id=\"row"+rs.getString("dictionary_id")+"\">");
+            table+=("<tr id=\"row"+rs.getString(1)+"\">");
             //dynamically adjusts according to number of columns in metadata
             for(int i=1; i <= columnCount; i++)
             {
                 //if (i > 1)
                 table+=("<td>"+rs.getString(i)+"</td>");
             }
-            table+=("<td class=\"actions\"><span class=\"glyphicon glyphicon glyphicon-edit\" data-toggle=\"modal\" data-target=\"#editModal\">");
-            table+=("</span><span class=\"glyphicon glyphicon-remove-sign\" data-toggle=\"modal\" data-target=\"#deleteModal\"></span></td>");
+            table+=("<td class=\"actions\"><div class=\"editIcon\" ><span class=\"glyphicon glyphicon glyphicon-edit\" data-toggle=\"modal\" data-target=\"#editModal\">");
+            table+=("</span></div><div class=\"deleteIcon\" ><span class=\"glyphicon glyphicon-remove-sign\" data-toggle=\"modal\" data-target=\"#deleteModal\"></span></div></td>");
             table+=("</tr>");
         }
         
         table+="<table>";
         
         return table;
+    }
+    
+    /**
+     * Deletes a record from a specified table according to a single column
+     * @param table
+     * @param idColumn
+     * @param idValue 
+     */
+    public void deleteFromTable(String table, String idColumn, String idValue)
+    {
+        
+        try{
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+            
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement("DELETE FROM "+table+" WHERE "+idColumn+" = ?");
+
+                //add parameters specified by user
+                pstat.setString(1, idValue);
+
+                //update table
+                pstat.executeUpdate();
+
+            }
+            finally
+            {
+                //close the connection
+                conn.close();
+            }
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     /**
@@ -228,6 +265,54 @@ public class AGDatabase {
         }
         
         return wordid;
+    }
+    
+    /**
+     * Inserts a new user into the database.
+     * @param welshword
+     * @param englishword
+     * @param gender 
+     */
+    public String addUser(String username, String password, String role)
+    {
+        String userid = "";
+        try{
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+        
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement(
+                    "INSERT INTO users(username, passwords, role)"
+                            + " VALUES(?,?,?);");
+
+                //add parameters specified by user
+                pstat.setString(1, username);
+                pstat.setString(2, password);
+                pstat.setString(3, role);
+
+                //print table
+                pstat.executeUpdate();
+                
+                PreparedStatement idStat = conn.prepareStatement(
+                    "SELECT user_id FROM users WHERE username = ?");
+                idStat.setString(1, username);
+                
+                ResultSet rs = idStat.executeQuery();
+                
+                rs.next();
+                userid= rs.getString("user_id");
+            }
+            finally{
+                conn.close();
+            }
+        }
+        catch (SQLException ex){
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return userid;
     }
     
     /**

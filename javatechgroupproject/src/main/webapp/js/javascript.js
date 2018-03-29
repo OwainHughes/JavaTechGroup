@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-//Passes new record to the db.
+
 $(document).ready(function() {
     
     setEventListeners();
@@ -24,7 +24,7 @@ $(document).ready(function() {
     //deletes a word record in the database
     $("#deleteWordDB").click(function() {
         //alert("detected");
-        editWordDB($(this).val());
+        deleteWordDB($(this).val());
     });
     
     //function to save word in database
@@ -49,6 +49,8 @@ $(document).ready(function() {
                 console.log("Success!");
                 console.log(response);
                 $('tbody').html(response);
+                $("tbody").fadeToggle(500);
+                $("tbody").fadeToggle(500);
                 setEventListeners();
             },
             error : function(e) {
@@ -57,6 +59,41 @@ $(document).ready(function() {
             }
         });
 
+    }
+    
+    //function to delete survet from database
+    function editWordDB(wordid){
+
+        // create form data
+        var word = {
+                wordid : wordid,
+                welshword : $("#wwEdit").val(),
+                englishword : $("#ewEdit").val(),
+                gender : $('input[name=genderEdit]:checked').val()
+        }
+
+
+        //Post data to the database
+        $.ajax({
+            type : "POST",
+            contentType : "application/x-www-form-urlencoded",
+            url : "/javatechgroupproject/EditWordServlet",
+            data : word,
+            dataType : 'text',
+            success : function(response) {
+                console.log("Success!");
+                console.log(response);
+                console.log("#row"+wordid);
+               $("tbody").fadeToggle(250);
+                $('tbody').html(response);
+                $("tbody").fadeToggle(250);
+                setEventListeners();
+            },
+            error : function(e) {
+                    alert("ERROR: Unable to add word");
+                    console.log("ERROR: ", e);
+            }
+        });
     }
 
     //function to delete word from database
@@ -72,14 +109,16 @@ $(document).ready(function() {
         $.ajax({
             type : "POST",
             contentType : "application/x-www-form-urlencoded",
-            url : "/javatechgroupproject/EditWordServlet",
+            url : "/javatechgroupproject/DeleteWordServlet",
             data : word,
             dataType : 'text',
             success : function(response) {
                 console.log("Success!");
                 console.log(response);
                 console.log("#row"+wordid);
+                $("tbody").fadeToggle(250);
                 $('tbody').html(response);
+                $("tbody").fadeToggle(250);
                 setEventListeners();
             },
             error : function(e) {
@@ -90,7 +129,7 @@ $(document).ready(function() {
 
     }
 
-    //function to delete survet from database
+    //function to save a word to database
     function saveWordDB(){
 
         // create form data
@@ -111,7 +150,9 @@ $(document).ready(function() {
             success : function(response) {
                 console.log("Success!");
                 console.log(response);
+                $("tbody").fadeToggle(250);
                 $('tbody').html(response);
+                $("tbody").fadeToggle(250);
                 setEventListeners();
             },
             error : function(e) {
