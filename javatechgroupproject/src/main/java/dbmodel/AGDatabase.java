@@ -13,8 +13,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Word;
 
 /**
  * Provides connection to database and provides sql statements.
@@ -249,6 +252,38 @@ public class AGDatabase {
         catch (SQLException ex){
             Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public ArrayList<Word> getWordsList()
+    {        
+        ArrayList<Word> wordList = new ArrayList<Word>();
+        
+        try {
+            Connection conn = SimpleDataSource.getConnection();
+            try {                
+                Statement stat = conn.createStatement();
+                ResultSet rs = stat.executeQuery("SELECT * FROM dictionary;");                
+            while(rs.next())
+            {
+                int id = rs.getInt("dictionary_id");
+                String welshWord = rs.getString("welsh_word");
+                String englishWord = rs.getString("english_word");
+                String gender = rs.getString("gender");
+                
+                Word tempWord = new Word(id, welshWord, englishWord, gender);
+                
+                wordList.add(tempWord);
+            }            
+            Collections.shuffle(wordList);
+            }
+            finally
+            {
+                conn.close();
+            }           
+        } catch (SQLException ex) {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return wordList;
     }
     
 }
