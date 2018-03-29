@@ -16,6 +16,10 @@
         <servlet-name>EditWordServlet</servlet-name>
         <servlet-class>com.mycompany.javatechgroupproject.EditWordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>QuestionGenServlet</servlet-name>
+        <servlet-class>com.mycompany.javatechgroupproject.QuestionGenServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DictionaryServlet</servlet-name>
         <url-pattern>/DictionaryServlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>EditWordServlet</servlet-name>
         <url-pattern>/EditWordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuestionGenServlet</servlet-name>
+        <url-pattern>/QuestionGenServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
