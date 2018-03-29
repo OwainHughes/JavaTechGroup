@@ -69,7 +69,15 @@ span:hover > .glyphicon-remove-sign{
         background-color: #5b985b;
         color:white;
         margin-bottom:3%;
+        cursor: pointer;
 }
+
+.addButton:hover {
+    background-color: #2179ef;
+	
+	
+}
+
 
 .actions{
 	text-align:center;
