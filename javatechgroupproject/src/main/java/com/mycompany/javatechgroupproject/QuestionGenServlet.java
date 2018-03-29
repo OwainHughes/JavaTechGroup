@@ -75,16 +75,21 @@ public class QuestionGenServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet QuestionGenServlet</title>");            
+            out.println("<title>Questionaire</title>");  
+            out.println("<link href=\"css/styles.css\" type=\"text/css\" rel=\"stylesheet\"/>");
+            out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>");
+            out.println("<script src=\"js/javascript.js\"></script>");
+            out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>");
+            out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"></link>");
             out.println("</head>");
             out.println("<body>");
             
             for(int i = 0; i < 20; i++)
             {
                 out.println("<div class='questionDiv' name='question" + (i + 1) + "'>");
-                out.println("<h1>Question " + (i + 1) + "</h1>");
+                
                 int r = rand.nextInt(3) + 1;
-                out.println(getQuestion(wordList.get(i)));
+                out.println(getQuestion(wordList.get(i), i + 1));
                 //out.println("<h1>"+ wordList.get(i).getWelshWord() + " is Welsh for " + wordList.get(i).getEnglishWord() + "</h1>");
                 out.println("</div>");
             }
@@ -104,7 +109,7 @@ public class QuestionGenServlet extends HttpServlet {
         //processRequest(request, response);
     }
     
-    public String getQuestion(Word word)
+    public String getQuestion(Word word, int questNum)
     {
         String toReturn = "";
         Random rand = new Random();
@@ -112,18 +117,19 @@ public class QuestionGenServlet extends HttpServlet {
         
         if(r == 1)
         {
-            toReturn += "<h1>What is the gender of the word " + word.getWelshWord() + "?</h1>";
+            
+            toReturn += "<h1>Q" + (questNum) + ") What is the gender of the word " + word.getWelshWord() + "?</h1>";
             toReturn += "<input type='radio' name=\"word"+ word.getId() + "\" value='male'>Male";
             toReturn += "<input type='radio' name=\"word"+ word.getId() + "\" value='female'>Female";
         }
         else if(r == 2)
         {
-            toReturn += "<h1>What is the English word for " + word.getWelshWord() + "?</h1>";
+            toReturn += "<h1>Q" + (questNum) + ") What is the English word for " + word.getWelshWord() + "?</h1>";
             toReturn += "<input answer=" + word.getEnglishWord() + "type='text' name=\"word" + word.getId() + "\">";
         }
         else
         {
-            toReturn += "<h1>What is the Welsh word for " + word.getEnglishWord() + "?</h1>";
+            toReturn += "<h1>Q" + (questNum) + ") What is the Welsh word for " + word.getEnglishWord() + "?</h1>";
             toReturn += "<input answer=" + word.getWelshWord() + "type='text' name=\"word" + word.getId() + "\">";
         }
         
