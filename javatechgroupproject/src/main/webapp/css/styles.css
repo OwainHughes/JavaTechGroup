@@ -82,3 +82,16 @@ form>label{
 	background-color:#e46f1c;
 	color:white;
 }
+
+.questionDiv{
+	margin:auto;
+	width:85%;
+	padding:20px;
+	background-color: whitesmoke;
+	text-align: center;
+}
+
+h1{
+	background-color: #ad3636;
+	color: white !important;;
+}
