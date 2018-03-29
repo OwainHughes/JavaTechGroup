@@ -10,6 +10,7 @@ $(document).ready(function() {
     //function to add row data to form
     $(".glyphicon-edit").click(function() {
         var cRow = $(this).closest("tr")[0];
+        console.log($(this).closest("tr").attr("id"));
         
         //pass id value to button
         $("#editWordDB").val($(cRow).find("td").eq(0).html()); 
@@ -61,8 +62,10 @@ $(document).ready(function() {
             url : "/javatechgroupproject/AddWordServlet",
             data : word,
             dataType : 'text',
-            success : function() {
+            success : function(response) {
                 console.log("Success!");
+                console.log(response);
+                $('tbody').html($('tbody').html()+response);
             },
             error : function(e) {
                     alert("ERROR: Unable to add word");

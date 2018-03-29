@@ -186,8 +186,9 @@ public class AGDatabase {
      * @param englishword
      * @param gender 
      */
-    public void addWord(String welshword, String englishword, String gender)
+    public String addWord(String welshword, String englishword, String gender)
     {
+        String wordid = "";
         try{
             //create variables
             Connection conn = SimpleDataSource.getConnection();
@@ -207,6 +208,16 @@ public class AGDatabase {
                 //print table
                 pstat.executeUpdate();
                 
+                PreparedStatement idStat = conn.prepareStatement(
+                    "SELECT dictionary_id FROM dictionary WHERE welsh_word = ? AND english_word = ? AND gender = ?");
+                idStat.setString(1, welshword);
+                idStat.setString(2, englishword);
+                idStat.setString(3, gender);
+                
+                ResultSet rs = idStat.executeQuery();
+                
+                rs.next();
+                wordid= rs.getString("dictionary_id");
             }
             finally{
                 conn.close();
@@ -215,6 +226,8 @@ public class AGDatabase {
         catch (SQLException ex){
             Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return wordid;
     }
     
     /**
