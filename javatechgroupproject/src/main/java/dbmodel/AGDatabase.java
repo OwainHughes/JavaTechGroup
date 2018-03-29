@@ -138,7 +138,7 @@ public class AGDatabase {
                 table+=("<td>"+rs.getString(i)+"</td>");
             }
             table+=("<td class=\"actions\"><span class=\"glyphicon glyphicon glyphicon-edit\" data-toggle=\"modal\" data-target=\"#editModal\">");
-            table+=("</span><span class=\"glyphicon glyphicon-remove-sign\"></span></td>");
+            table+=("</span><span class=\"glyphicon glyphicon-remove-sign\" data-toggle=\"modal\" data-target=\"#deleteModal\"></span></td>");
             table+=("</tr>");
         }
         

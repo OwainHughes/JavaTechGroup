@@ -83,9 +83,10 @@ public class AddWordServlet extends HttpServlet {
             
             response.setContentType("text");
             try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                out.println("<tr id=\"row"+wordid+"\"><td>"+wordid+"</td><td>"+welshword+"</td><td>"+englishword+"</td><td>"+gender+"</td><td class=\"actions\"><span class=\"glyphicon glyphicon glyphicon-edit\" data-toggle=\"modal\" data-target=\"#editModal\"></span><span class=\"glyphicon glyphicon-remove-sign\"></span></td>");
+                //pass new row to user
+                out.println(db.getTableHTML("dictionary","welsh_word"));
             }
+            
         } catch (IOException ex) {
             Logger.getLogger(AddWordServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

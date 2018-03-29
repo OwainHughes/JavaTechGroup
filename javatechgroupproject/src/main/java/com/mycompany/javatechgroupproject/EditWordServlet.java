@@ -85,17 +85,19 @@ public class EditWordServlet extends HttpServlet {
             db.updateTable("dictionary", "dictionary_id", wordid, "english_word", englishword);
             db.updateTable("dictionary", "dictionary_id", wordid, "gender", gender);
             
+            response.setContentType("text");
+            try (PrintWriter out = response.getWriter()) {
+                //pass new row to user
+                out.println(db.getTableHTML("dictionary","welsh_word"));
+            }
+            
         } catch (IOException ex) {
             Logger.getLogger(AddWordServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AddWordServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        response.setContentType("text");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<td>"+wordid+"</td><td>"+welshword+"</td><td>"+englishword+"</td><td>"+gender+"</td><td class=\"actions\"><span class=\"glyphicon glyphicon glyphicon-edit\" data-toggle=\"modal\" data-target=\"#editModal\"></span><span class=\"glyphicon glyphicon-remove-sign\"></span></td>");
-        }
+        
     }
 
     /**

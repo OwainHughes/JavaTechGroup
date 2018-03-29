@@ -134,6 +134,28 @@ public class DictionaryServlet extends HttpServlet {
             "    </div>\n" +
             "  </div>");
             
+            //print the delete modal
+            out.println("<div class=\"modal fade\" id=\"deleteModal\" role=\"dialog\" style=\"display: none;\">\n" +
+            "    <div class=\"modal-dialog\">\n" +
+            "    \n" +
+            "      \n" +
+            "      <div class=\"modal-content\">\n" +
+            "        <div class=\"modal-header\">\n" +
+            "          <button type=\"button\" class=\"close\" data-dismiss=\"modal\">×</button>\n" +
+            "          <h4 class=\"modal-title\">Delete Word</h4>\n" +
+            "        </div>\n" +
+            "        <div class=\"modal-body\">\n" +
+            "    <p>Are you sure you want to delete this record?</p> \n" +
+            "        </div>\n" +
+            "        <div class=\"modal-footer\">\n" +
+            "          <button id=\"deleteWordDB\" type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Delete</button>\n" +
+            "          <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Cancel</button>\n" +
+            "        </div>\n" +
+            "      </div>\n" +
+            "      \n" +
+            "    </div>\n" +
+            "  </div>");
+            
             out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\">Add new word</button>");
             try {
                 AGDatabase db = new AGDatabase();

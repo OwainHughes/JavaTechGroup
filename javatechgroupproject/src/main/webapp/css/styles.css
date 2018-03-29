@@ -1,5 +1,5 @@
 .tabGUI{
-    z-index: 1;
+    
 	margin: auto;
 	width : 85%;
 	font-size: 20px;
@@ -45,9 +45,22 @@ td:hover > .glyphicon-edit{
 	color:#ff9245;
 }
 
+.editIcon{
+	margin-left:15%;
+	float:left;
+}
+
+.deleteIcon{
+	margin-right:15%;
+	float:right;
+}
 
 .glyphicon-remove-sign{
 	color:#b70606;
+}
+
+span:hover > .glyphicon-remove-sign{
+	color:#e46868;
 }
 
 .addButton{
@@ -78,8 +91,18 @@ form>label{
 	color:white;
 }
 
+
 #editModal .modal-header{
 	background-color:#e46f1c;
+	color:white;
+}
+
+#deleteModal{
+    margin-top:10%;
+}
+
+#deleteModal .modal-header{
+	background-color:#ff0000;
 	color:white;
 }
 
