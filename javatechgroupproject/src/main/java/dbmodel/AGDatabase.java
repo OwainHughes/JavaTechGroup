@@ -99,6 +99,36 @@ public class AGDatabase {
     }
     
     /**
+     * Returns HTML for a specific table, sorted by a specific column
+     * @param table
+     */
+    public String getUserTableHTML()
+    {
+
+        try{
+             //create variables
+            Connection conn = SimpleDataSource.getConnection();
+
+            //get resultset from database
+            try {
+                Statement stat = conn.createStatement();
+                ResultSet rs = stat.executeQuery("SELECT user_id,username,'******' as passwords,role FROM users ORDER BY username ASC");
+
+                return printTable(rs);
+            } 
+            finally
+            {
+                conn.close();
+            }
+        }
+        catch (SQLException ex) {
+                Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "fail";
+    }
+    
+    /**
      * Formats a ResultSet as a HTML table
      * @param rs the results set
      * @throws SQLException 

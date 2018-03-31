@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,13 +34,28 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response,
                                 String userName, String role)
             throws ServletException, IOException {
+        
         String reply = "";
+        
         if(role.equals("NoRole"))
         {
             reply = "Incorrect username or password";
         }
         else
         {
+            // Create cookies for first and last names.      
+            Cookie un = new Cookie("username",userName);
+            Cookie ps = new Cookie("password", request.getParameter("password"));
+            
+            // Set expiry date after 30 minutes.
+            un.setMaxAge(60*30);
+            ps.setMaxAge(60*30);
+
+            // Add cookies to response.
+            response.addCookie(un);
+            response.addCookie(ps);
+
+            
             reply = userName + " Role:" + role;
         }
         response.setContentType("text/html;charset=UTF-8");

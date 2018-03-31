@@ -86,7 +86,7 @@ public class AddUserServlet extends HttpServlet {
             response.setContentType("text");
             try (PrintWriter out = response.getWriter()) {
                 //pass updated table to user
-                out.println(db.getTableHTML("users","username"));
+                out.println(db.getUserTableHTML());
             }
             
         } catch (IOException ex) {

@@ -32,7 +32,7 @@ tr:nth-child(odd) {
     background-color:whitesmoke;
 }
 
-.glyphicon{
+td .glyphicon {
 	margin-left:10%;
 	font-size: 25px;
 }
@@ -64,6 +64,7 @@ span:hover > .glyphicon-remove-sign{
 }
 
 .addButton{
+        vertical-align: middle;
         border:none;
         padding:10px;
         background-color: #5b985b;
@@ -129,4 +130,61 @@ form>label{
 h1{
 	background-color: #ad3636;
 	color: white !important;;
+}
+
+#draigImage{
+	margin-top:1%;
+	width:25%;
+}
+
+#headerLine{
+	position:relative;
+	z-index:1;
+	background-color:#ad3636;
+	padding:10px;
+	margin-top:1%;
+}
+
+.headerButton
+{
+	background-color: whitesmoke;
+	color:#ad3636;
+	font-weight:bold;
+	border:0;
+	margin-right:2%;
+	margin-top:3.5%;
+	padding-left:2%;
+	padding-bottom:1%;
+	padding-right:2%;
+	padding-top:1%;
+	font-size:130%;
+	float: right;
+}
+
+.glyphicon-user{
+	margin-top:0.5%;
+	margin-right:0.5%;
+	font-size:120%;
+	float:right;
+	margin-left:0;
+	color:#ad3636;
+}
+
+.unClass{
+	color:#ad3636;
+	text-align:right;
+	margin-right:0.5%;
+	margin-top:0.2%;
+}
+
+
+.headerButton:hover, #currentTab
+{
+
+	color:white;
+	background-color:#ad3636;
+}
+
+#headerDiv{
+	margin-right:5%;
 }

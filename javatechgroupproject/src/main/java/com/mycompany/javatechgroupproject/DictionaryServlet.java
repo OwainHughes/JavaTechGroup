@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,6 +52,12 @@ public class DictionaryServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+             AGDatabase db = new AGDatabase();
+             
+             Cookie[] c = request.getCookies();
+             
+            
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -63,7 +70,16 @@ public class DictionaryServlet extends HttpServlet {
             out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"></link>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DictionaryServlet at " + request.getContextPath() + "</h1>");
+            
+            //print current user
+            out.println("<span class=\"glyphicon glyphicon-user\">"+c[0].getValue()+"</span>");
+                        
+            //header banner
+            out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
+            out.println("<button class=\"headerButton\" >Test History</button>");
+            out.println("<button class=\"headerButton\" id=\"currentTab\">Dictionary</button>");
+            out.println("<button class=\"headerButton\">Home</button></div>");
+            out.println("<div id=\"headerLine\"></div>");
             
             out.println("<div class=\"tabGUI\">");
             
@@ -156,17 +172,16 @@ public class DictionaryServlet extends HttpServlet {
             "    </div>\n" +
             "  </div>");
             
-            out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\">Add new word</button>");
-            try {
-                AGDatabase db = new AGDatabase();
-                out.println(db.getTableHTML("dictionary","welsh_word"));
+            out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\"><span class=\"glyphicon glyphicon-plus\"> </span>Add word</button>");
+
+            out.println(db.getTableHTML("dictionary","welsh_word"));
             
-            } catch (ClassNotFoundException ex) {
-                out.println("CLASS ERROR");
-            }
             out.println("</div>");
             out.println("</body>");
             out.println("</html>");
+        }
+        catch (ClassNotFoundException ex) {
+                
         }
     }
 

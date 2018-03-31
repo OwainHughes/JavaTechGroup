@@ -9,6 +9,7 @@ import dbmodel.AGDatabase;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,6 +60,8 @@ public class RegisterUsersServlet extends HttpServlet {
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
             
+            Cookie[] c = request.getCookies();
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -70,7 +73,17 @@ public class RegisterUsersServlet extends HttpServlet {
             out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"></link>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DictionaryServlet at " + request.getContextPath() + "</h1>");
+            
+            //print current user
+            out.println("<span class=\"glyphicon glyphicon-user\">"+c[0].getValue()+"</span>");
+            
+            //header banner
+            out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
+            out.println("<button class=\"headerButton\" >Test History</button>");
+            out.println("<button class=\"headerButton\" id=\"currentTab\">User Details</button>");
+            out.println("<button class=\"headerButton\">Home</button></div>");
+            out.println("<div id=\"headerLine\"></div>");
+            
             out.println("<div class=\"tabGUI\">");
             
             //print the add modal form.
@@ -171,11 +184,11 @@ public class RegisterUsersServlet extends HttpServlet {
             "    </div>\n" +
             "  </div>");
             
-            out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\">Register new user</button>");
-            
+            out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\"><span class=\"glyphicon glyphicon-plus\"> </span>Add word</button>");
+
             try {
                 AGDatabase db = new AGDatabase();
-                out.println(db.getTableHTML("users","username"));
+                out.println(db.getUserTableHTML());
 
             } catch (ClassNotFoundException ex) {
                 out.println("CLASS ERROR");

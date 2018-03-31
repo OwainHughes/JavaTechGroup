@@ -83,13 +83,19 @@ public class EditUserServlet extends HttpServlet {
             //update rows in the database
             AGDatabase db = new AGDatabase();
             db.updateTable("users", "user_id", userid, "username", username);
-            db.updateTable("users", "user_id", userid, "passwords", password);
+            
+            //check to see if password has changed.
+            if(!password.equals("******"))
+            { 
+                db.updateTable("users", "user_id", userid, "passwords", password);
+            }
+            
             db.updateTable("users", "user_id", userid, "role", role);
             
             response.setContentType("text");
             try (PrintWriter out = response.getWriter()) {
                 //pass new row to user
-                out.println(db.getTableHTML("users","username"));
+                out.println(db.getUserTableHTML());
             }
             
         } catch (IOException ex) {

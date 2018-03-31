@@ -48,9 +48,9 @@ $(document).ready(function() {
             success : function(response) {
                 console.log("Success!");
                 console.log(response);
-                $("tbody").fadeToggle(500);
+                $("tbody").fadeToggle(200);
                 $('tbody').html(response);
-                $("tbody").fadeToggle(500);
+                $("tbody").fadeToggle(200);
                 setEventListeners();
             },
             error : function(e) {
@@ -84,9 +84,9 @@ $(document).ready(function() {
                 console.log("Success!");
                 console.log(response);
                 console.log("#row"+userid);
-                $("tbody").fadeToggle(500);
+                $("tbody").fadeToggle(200);
                 $('tbody').html(response);
-                $("tbody").fadeToggle(500);
+                $("tbody").fadeToggle(200);
                 setEventListeners();
             },
             error : function(e) {
@@ -116,9 +116,9 @@ $(document).ready(function() {
                 console.log("Success!");
                 console.log(response);
                 console.log("#row"+userid);
-                $("tbody").fadeToggle(250);
+                $("tbody").fadeToggle(200);
                 $('tbody').html(response);
-                $("tbody").fadeToggle(250);
+                $("tbody").fadeToggle(200);
                 setEventListeners();
             },
             error : function(e) {

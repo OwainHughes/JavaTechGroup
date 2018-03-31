@@ -83,7 +83,7 @@ public class DeleteUserServlet extends HttpServlet {
             response.setContentType("text");
             try (PrintWriter out = response.getWriter()) {
                 //pass new row to user
-                out.println(db.getTableHTML("users","user_id"));
+                out.println(db.getUserTableHTML());
             }
             
         } catch (IOException ex) {
