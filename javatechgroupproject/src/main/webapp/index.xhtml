@@ -12,18 +12,20 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <div>
+        
+        <div id="headerDiv"><img src="banner2.png" id="draigImage"></img>
+        </div>
+        <div id="headerLine"></div>
+        <div id="loginForm">
             <form action="LoginServlet" method="POST">
-                <p>
-                    <label>Enter Login Details</label>                           
-                </p>
-                <br></br>
-                Username:<input type="text" name="userName" />
-                <br></br>
-                <br></br>
-                Password    :<input type="password" name="password" />
-                <br></br>
-                <input type="submit" value="submit"/>
+                <div class="loginHeader">
+                    <label>Enter Details</label>                           
+                </div>
+                <input type="text" name="userName" placeholder="Username" />
+                
+                <input type="password" name="password" placeholder="Password" />
+                
+                <input type="submit" value="Login" />
             </form>
         </div>
     </body>

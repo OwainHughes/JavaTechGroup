@@ -188,3 +188,44 @@ h1{
 #headerDiv{
 	margin-right:5%;
 }
+
+#loginForm
+{
+	text-align:center;
+	background-color:whitesmoke;
+	margin:auto;
+	width:30%;
+	margin-top:5%;
+	font-family: arial, sans-serif;
+	color:white;
+	font-size:150%;
+}
+
+#loginForm input {
+	
+	font-size:100%;
+	margin:auto;
+	margin-top:10%;
+	width:60%;
+	
+}
+
+#loginForm input[type=text], #loginForm input[type=password]
+{
+	height:40px;
+}
+
+#loginForm input[type=submit] {
+	margin-top: 10%;
+	margin-bottom: 10%;
+	padding:3%;
+	background-color:#5b985b;
+	color:white;
+	border:none;
+	cursor:pointer;
+}
+
+.loginHeader {
+	background-color:#ad3636;
+	padding:10px;
+}
