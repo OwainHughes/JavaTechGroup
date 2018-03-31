@@ -15,8 +15,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.User;
 import model.Word;
 
 /**
@@ -220,19 +222,24 @@ public class AGDatabase {
      * @param password
      * @return 
      */
-    public String QueryLogin(String userName, String password)
+    public User QueryLogin(String userName, String password)
     {
         ResultSet rs = null;
+        
+        User user = new User(-1,"","");
+        
         String resultString = "NoRole";
         try {
             Connection conn = SimpleDataSource.getConnection();
             try {
                 Statement stat = conn.createStatement();
-                rs = stat.executeQuery("SELECT Role FROM users" 
+                rs = stat.executeQuery("SELECT * FROM users" 
                         + " WHERE username = '" + userName + "' AND passwords = '" + password + "';");
             while(rs.next()) 
             {
-                resultString = rs.getString(1);
+                int userId = Integer.parseInt(rs.getString("user_id"));
+                String role = rs.getString("role");
+                user = new User(userId,userName,role);
             }
                 
             }
@@ -244,7 +251,7 @@ public class AGDatabase {
             Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return resultString;
+        return user;
     }
     
     /**
@@ -412,6 +419,98 @@ public class AGDatabase {
             Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
         return wordList;
+    }
+    
+    /**
+     * Inserts a new session into the database
+     */
+    public String recordSession(User user)
+    {
+        //create cookie to record login
+        String sessionid = UUID.randomUUID().toString();
+            
+        try {
+                        
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+            
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement(
+                        "INSERT INTO sessions"
+                                + " VALUES(?,?);");
+                
+                //add parameters specified by user
+                pstat.setString(1, sessionid);
+                pstat.setInt(2, user.getUserid());
+                
+                //print table
+                pstat.executeUpdate();
+            }
+            finally{
+                conn.close();
+            }
+            
+           
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         //return new sessionid
+         return sessionid;
+    }
+    
+    /**
+     * Return user associated with a session id
+     */
+    public User getSessionUser(String sessionid)
+    {
+        //create cookie to record login
+        User user = new User(-1,"","");
+            
+        try {
+                        
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+            
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement(
+                        "SELECT * FROM sessions AS x"
+                                +" INNER JOIN users AS y on x.user_id=y.user_id "
+                                +"WHERE session_id = ?");
+                
+                //add parameters specified by user
+                pstat.setString(1, sessionid);
+                
+                System.out.println(pstat.toString());
+                
+                //get table table
+                ResultSet rs = pstat.executeQuery();
+                
+                while(rs.next())
+                {
+                    //set user object to corresponding user
+                    user = new User(Integer.parseInt(rs.getString("user_id")),
+                                    rs.getString("username"),
+                                    rs.getString("role"));
+                }
+                
+                
+            }
+            finally{
+                conn.close();
+            }
+            
+           
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         //return new sessionid
+         return user;
     }
     
 }

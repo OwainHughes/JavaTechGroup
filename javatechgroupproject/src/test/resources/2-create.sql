@@ -30,3 +30,8 @@ CREATE TABLE results
     correct_answer VARCHAR(255),
     FOREIGN KEY (submission_id) REFERENCES submissions(submission_id) ON UPDATE CASCADE ON DELETE CASCADE); 
 
+CREATE TABLE sessions
+(session_id VARCHAR(255) PRIMARY KEY,
+ user_id INT NOT NULL,
+ FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE ON DELETE CASCADE);
+

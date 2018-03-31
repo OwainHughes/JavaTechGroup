@@ -8,6 +8,7 @@ package com.mycompany.javatechgroupproject;
 import dbmodel.AGDatabase;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  *
@@ -32,32 +34,22 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response,
-                                String userName, String role)
-            throws ServletException, IOException {
+                                String userName, String sessionid)
+        throws ServletException, IOException {
         
         String reply = "";
+
+        // Create cookies for first and last names.      
+        Cookie sessionCookie = new Cookie("sessionid",sessionid);
+
+        // Set expiry date after 30 minutes.
+        sessionCookie.setMaxAge(60*30);
+
+        // Add cookies to response.
+        response.addCookie(sessionCookie);
+
+        reply = "Session Id:" + sessionid;
         
-        if(role.equals("NoRole"))
-        {
-            reply = "Incorrect username or password";
-        }
-        else
-        {
-            // Create cookies for first and last names.      
-            Cookie un = new Cookie("username",userName);
-            Cookie ps = new Cookie("password", request.getParameter("password"));
-            
-            // Set expiry date after 30 minutes.
-            un.setMaxAge(60*30);
-            ps.setMaxAge(60*30);
-
-            // Add cookies to response.
-            response.addCookie(un);
-            response.addCookie(ps);
-
-            
-            reply = userName + " Role:" + role;
-        }
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {           
             out.println("<!DOCTYPE html>");
@@ -113,21 +105,45 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
-        String role = "";
+        
         try {
             //check if user is in database
-            //if so grab user roll
             AGDatabase dbConn  = new AGDatabase();
+            User user = dbConn.QueryLogin(userName, password);
             
-            role = dbConn.QueryLogin(userName, password);            
+            //check if user exists
+            if(user.getUserid()>-1)
+            {
+                String sessionid = dbConn.recordSession(user);
+                
+                //pass to process request
+                processRequest(request, response, userName, sessionid);
+            }
+            else
+            {
+                //inform user of incorrect password.
+                response.setContentType("text/html;charset=UTF-8");
+                try (PrintWriter out = response.getWriter()) {           
+                    out.println("<!DOCTYPE html>");
+                    out.println("<html>");
+                    out.println("<head>");
+                    out.println("<title>Servlet LoginServlet</title>");            
+                    out.println("</head>");
+                    out.println("<body>");
+                    out.println("<h1>User: Invalid Username & Password</h1>");
+                    out.println("</body>");
+                    out.println("</html>");
+                }
+            }
+            
+            
                        
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        processRequest(request, response, userName, role);    
+           
     }
 
     /**

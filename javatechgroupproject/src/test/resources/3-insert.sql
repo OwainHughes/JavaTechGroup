@@ -38,4 +38,5 @@ VALUES
 INSERT INTO users
 VALUES
 (1,'admin1','@12345','ADMINISTRATOR'),
-(2,'eeu89a','abc','STUDENT');
+(2,'eeu89a','abc','STUDENT'),
+(3,'eeu950','123','ADMINISTRATOR');
