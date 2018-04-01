@@ -194,7 +194,7 @@ h1{
 	text-align:center;
 	background-color:whitesmoke;
 	margin:auto;
-	width:30%;
+	width:40%;
 	margin-top:5%;
 	font-family: arial, sans-serif;
 	color:white;
@@ -228,4 +228,9 @@ h1{
 .loginHeader {
 	background-color:#ad3636;
 	padding:10px;
+}
+
+input[type=radio]
+{
+	margin-right:2% !important;
 }
