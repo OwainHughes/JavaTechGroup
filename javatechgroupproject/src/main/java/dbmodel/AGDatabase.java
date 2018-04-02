@@ -513,4 +513,54 @@ public class AGDatabase {
          return user;
     }
     
+    public boolean checkAnswer(String wordId, String userAnswer, String qType)
+    {
+        boolean toReturn = false;
+        try{
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+            
+            //update rows in database
+            try {
+                //generate sql statement
+                
+                String correctAnswerCol = "";
+                if(qType.equals("1"))
+                {
+                    correctAnswerCol = "welsh_word";
+                }
+                else if(qType.equals("2"))
+                {
+                    correctAnswerCol = "english_word";
+                }
+                else
+                {
+                    correctAnswerCol = "gender";
+                }
+                
+                PreparedStatement pstat = conn.prepareStatement("SELECT " + correctAnswerCol + " FROM dictionary WHERE dictionary_id = " + wordId.substring(4));
+                ResultSet rs = pstat.executeQuery();
+                rs.next();
+                String correctAnswer = rs.getString(1);
+                if(userAnswer.equals(correctAnswer))
+                {
+                    toReturn = true;
+                }
+
+            }
+            finally
+            {
+                //close the connection
+                conn.close();
+            }
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        return toReturn;
+    }
+    
 }
