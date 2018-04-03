@@ -14,6 +14,7 @@ public class User {
     private int userid;
     private String username;
     private String role;
+    private boolean valid;
 
     /**
      * Constructor for user object.
@@ -25,6 +26,14 @@ public class User {
         this.userid = userid;
         this.username = username;
         this.role = role;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     /**

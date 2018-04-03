@@ -6,6 +6,7 @@
 package com.mycompany.javatechgroupproject;
 
 import dbmodel.AGDatabase;
+import dbmodel.UserAuthentication;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.User;
 import model.Word;
 import org.json.*;
 
@@ -166,44 +168,42 @@ public class QuestionGenServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
         
+        User user = null;
+        //check validity of user
+        try 
+        {
+            user = UserAuthentication.CheckSession(request, response);
+        }
+        catch (ClassNotFoundException ex) 
+        {
+            Logger.getLogger(QuestionGenServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //Retrieve JSON object from post
         String JSONString = request.getParameter("JSONString");
         int score = 0;
+        
         //System.out.println("START/");
         //System.out.println(JSONString);
         //System.out.println("/END");
         
         JSONObject jObj = new JSONObject(JSONString);
         JSONArray jArray = jObj.getJSONArray("questions");
-        for(int i = 0; i < jArray.length(); i++)
-        {            
-            JSONObject tempObj = (JSONObject)jArray.get(i);
-            String outPutID = tempObj.getString("wordId");
-            String outPutType = tempObj.getString("questionType");
-            String outPutAnswer;
+        
             
-            try{
-            outPutAnswer = tempObj.getString("userAnswer");
-            }catch(org.json.JSONException e)
-            {
-                outPutAnswer = "";
-            }
-            System.out.println(outPutID + " " + outPutType + " " + outPutAnswer);
+        try {
+            AGDatabase conn = new AGDatabase();
+
+            //pass JSON object to database to calculate score
+            score = conn.checkAnswer(jArray,user);
             
-            try {
-                AGDatabase conn = new AGDatabase();
-                boolean correct = conn.checkAnswer(outPutID, outPutAnswer, outPutType);
-                if(correct)
-                {
-                    score++;
-                }
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(QuestionGenServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(QuestionGenServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+            
+            
+        
         
         
         response.setContentType("text/html;charset=UTF-8");

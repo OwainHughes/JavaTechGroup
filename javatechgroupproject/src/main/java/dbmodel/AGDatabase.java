@@ -20,6 +20,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
 import model.Word;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Provides connection to database and provides sql statements.
@@ -421,6 +423,8 @@ public class AGDatabase {
         return wordList;
     }
     
+    
+    
     /**
      * Inserts a new session into the database
      */
@@ -496,6 +500,7 @@ public class AGDatabase {
                     user = new User(Integer.parseInt(rs.getString("user_id")),
                                     rs.getString("username"),
                                     rs.getString("role"));
+                    user.setValid(true);
                 }
                 
                 
@@ -512,41 +517,61 @@ public class AGDatabase {
          //return new sessionid
          return user;
     }
+
     
-    public boolean checkAnswer(String wordId, String userAnswer, String qType)
+    public int checkAnswer(JSONArray jArray, User user)
     {
-        boolean toReturn = false;
+        int score = 0;
+        
         try{
             //create variables
             Connection conn = SimpleDataSource.getConnection();
             
-            //update rows in database
-            try {
-                //generate sql statement
-                
-                String correctAnswerCol = "";
-                if(qType.equals("1"))
-                {
-                    correctAnswerCol = "welsh_word";
-                }
-                else if(qType.equals("2"))
-                {
-                    correctAnswerCol = "english_word";
-                }
-                else
-                {
-                    correctAnswerCol = "gender";
-                }
-                
-                PreparedStatement pstat = conn.prepareStatement("SELECT " + correctAnswerCol + " FROM dictionary WHERE dictionary_id = " + wordId.substring(4));
-                ResultSet rs = pstat.executeQuery();
-                rs.next();
-                String correctAnswer = rs.getString(1);
-                if(userAnswer.equals(correctAnswer))
-                {
-                    toReturn = true;
-                }
+            try 
+            {
+                for(int i = 0; i < jArray.length(); i++)
+                {            
+                    JSONObject tempObj = (JSONObject)jArray.get(i);
+                    String wordId = tempObj.getString("wordId");
+                    String qType = tempObj.getString("questionType");
+                    String userAnswer;
 
+                    try{
+                    userAnswer = tempObj.getString("userAnswer");
+                    }catch(org.json.JSONException e)
+                    {
+                        userAnswer = "";
+                    }
+                    System.out.println(wordId + " " + qType + " " + userAnswer);
+
+                    //update rows in database
+
+                    //generate sql statement
+
+                    String correctAnswerCol = "";
+                    if(qType.equals("1"))
+                    {
+                        correctAnswerCol = "welsh_word";
+                    }
+                    else if(qType.equals("2"))
+                    {
+                        correctAnswerCol = "english_word";
+                    }
+                    else
+                    {
+                        correctAnswerCol = "gender";
+                    }
+
+                    PreparedStatement pstat = conn.prepareStatement("SELECT " + correctAnswerCol + " FROM dictionary WHERE dictionary_id = " + wordId.substring(4));
+                    ResultSet rs = pstat.executeQuery();
+                    rs.next();
+                    String correctAnswer = rs.getString(1);
+                    if(userAnswer.equals(correctAnswer))
+                    {
+                        score++;
+                    }
+
+                }
             }
             finally
             {
@@ -560,7 +585,7 @@ public class AGDatabase {
         }
         
         
-        return toReturn;
+        return score;
     }
     
 }

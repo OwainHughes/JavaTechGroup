@@ -11,15 +11,15 @@ package model;
  */
 public class Question {   
     
-    private Word word;
+    private String wordid;
     private int qType;
     private int questionNum;
     private String userInput;
     
     //constructor
-    public Question(Word word, int qType, int questionNum, String userInput)
+    public Question(String wordid, int qType, int questionNum, String userInput)
     {
-        this.word = word;
+        this.wordid = wordid;
         this.qType = qType;
         this.questionNum = questionNum;
         this.userInput = userInput;
@@ -28,15 +28,15 @@ public class Question {
     /**
      * @return the word
      */
-    public Word getWord() {
-        return word;
+    public String getWordid() {
+        return wordid;
     }
 
     /**
      * @param word the word to set
      */
-    public void setWord(Word word) {
-        this.word = word;
+    public void setWordId(String wordid) {
+        this.wordid = wordid;
     }
 
     /**
