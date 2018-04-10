@@ -8,6 +8,7 @@ package com.mycompany.javatechgroupproject;
 import dbmodel.AGDatabase;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -81,7 +82,13 @@ public class AddUserServlet extends HttpServlet {
         try {
             //insert into database
             AGDatabase db = new AGDatabase();
-            String userid = db.addUser(username,password,role);
+            String[] columns = {"username","passwords","role"};
+            String[] values = {username,password,role};
+            
+            ArrayList<String[]> rows = new ArrayList<String[]>();
+            rows.add(values);
+            
+            db.insertRows("users", columns, rows);
             
             response.setContentType("text");
             try (PrintWriter out = response.getWriter()) {

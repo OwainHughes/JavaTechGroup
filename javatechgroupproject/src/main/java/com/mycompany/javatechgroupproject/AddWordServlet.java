@@ -8,6 +8,7 @@ package com.mycompany.javatechgroupproject;
 import dbmodel.AGDatabase;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -47,7 +48,6 @@ public class AddWordServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -79,7 +79,13 @@ public class AddWordServlet extends HttpServlet {
         
         try {
             AGDatabase db = new AGDatabase();
-            String wordid = db.addWord(welshword,englishword,gender);
+            String[] columns = {"welsh_word","english_word","gender"};
+            String[] values = {welshword,englishword,gender};
+            
+            ArrayList<String[]> rows = new ArrayList<String[]>();
+            rows.add(values);
+            
+            db.insertRows("dictionary",columns,rows);
             
             response.setContentType("text");
             try (PrintWriter out = response.getWriter()) {

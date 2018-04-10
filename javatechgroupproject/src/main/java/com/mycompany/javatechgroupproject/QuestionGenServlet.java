@@ -9,7 +9,10 @@ import dbmodel.AGDatabase;
 import dbmodel.UserAuthentication;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +20,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Answers;
+import model.Submission;
 import model.User;
 import model.Word;
 import org.json.*;
@@ -56,7 +61,6 @@ public class QuestionGenServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -92,6 +96,12 @@ public class QuestionGenServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             
+            //header banner
+            out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
+            out.println("<button class=\"headerButton\" >Test History</button>");
+            out.println("<button class=\"headerButton\" id=\"currentTab\">Dictionary</button>");
+            out.println("<button class=\"headerButton\">Home</button></div>");
+            out.println("<div id=\"headerLine\"></div>");
             
             for(int i = 0; i < 20; i++)
             {                
@@ -103,7 +113,7 @@ public class QuestionGenServlet extends HttpServlet {
             }
             
             System.out.println(xmlString);
-            out.println("<div class='questionDiv'>");
+            out.println("<div class='submitDiv questionDiv'>");
             out.println("<input type=\"submit\" onclick=createTestObj() value=\"Save and Submit\"");
             out.println("</div>");
             out.println("");            
@@ -125,14 +135,14 @@ public class QuestionGenServlet extends HttpServlet {
     public String getQuestion(Word word, int questNum, int r)
     {
         String toReturn = "";
-        Random rand = new Random();
+        
         
         
         if(r == 3)
         {            
             toReturn += "<h1>Q" + (questNum) + ") What is the gender of the word \"" + word.getWelshWord() + "\"?</h1>";
-            toReturn += "<input type='radio' name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='male'>Male";
-            toReturn += "<input type='radio' name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='female'>Female";
+            toReturn += "<input type='radio' class=\"gender\" name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='male'><span class=\"gender\">Male</span>";
+            toReturn += "<input type='radio' class=\"gender\" name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='female'><span class=\"gender\">Female</span>";
         }
         else if(r == 2)
         {
@@ -141,7 +151,17 @@ public class QuestionGenServlet extends HttpServlet {
         }
         else
         {
-            toReturn += "<h1>Q" + (questNum) + ") What is the Welsh word for \"" + word.getEnglishWord() + "\"?</h1>";
+            String gender = "";
+            if(word.getGender().equals("male"))
+            {
+                gender = "masculine";
+            }
+            else
+            {
+                gender = "feminine";
+            }
+        
+            toReturn += "<h1>Q" + (questNum) + ") What is the "+gender+" Welsh word for \"" + word.getEnglishWord() + "\"?</h1>";
             toReturn += "<input id=\"userInput"+ questNum +"\"  type='text'  wordId=\"word" + word.getId() + "\">";
         }
         
@@ -170,7 +190,7 @@ public class QuestionGenServlet extends HttpServlet {
             throws ServletException, IOException {
         
         User user = null;
-        //check validity of user
+        //authenticate user
         try 
         {
             user = UserAuthentication.CheckSession(request, response);
@@ -184,27 +204,58 @@ public class QuestionGenServlet extends HttpServlet {
         String JSONString = request.getParameter("JSONString");
         int score = 0;
         
-        //System.out.println("START/");
-        //System.out.println(JSONString);
-        //System.out.println("/END");
-        
         JSONObject jObj = new JSONObject(JSONString);
         JSONArray jArray = jObj.getJSONArray("questions");
         
-            
         try {
             AGDatabase conn = new AGDatabase();
 
-            //pass JSON object to database to calculate score
-            score = conn.checkAnswer(jArray,user);
+            //pass JSON object to database to calculate score & map to object
+            Submission s = conn.checkAnswer(jArray,user);
+            ArrayList<Answers> submissionAnswers = s.getAnswers();
+            
+            score = s.getScore();
+            
+            
+            //record test submission in database
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String creationDate = formatter.format(new Date());
+            
+            //save score to the database
+            String[] columnArray = {"user_id","creation_date","score"};
+            String[] valueArray = {""+user.getUserid(),creationDate,""+score};
+            ArrayList<String[]> rows = new ArrayList<String[]>();
+            rows.add(valueArray);
+            
+            //insert & return pk
+            int submission_id = conn.insertRows("submissions", columnArray, rows).get(0);
+            System.out.println("submission id="+submission_id);
+            
+           //insert submission
+            String[] resultsColumns = {"submission_id","dictionary_id","question_type","user_answer","correct_answer"};
+            
+            //Insert each answer associated with a submission
+            ArrayList<String[]> resultsRows = new ArrayList<String[]>();
+            
+            for (int i = 0; i<submissionAnswers.size();i++)
+            {
+                String wordId = submissionAnswers.get(i).getWordId();
+                String qTextType = submissionAnswers.get(i).getQuestionType();
+                String uAns = submissionAnswers.get(i).getUserAnswer();
+                String cAns = submissionAnswers.get(i).getCorrectAnswer();
+                
+                String[] submissionVals = {""+submission_id,wordId,qTextType,uAns,cAns};
+                resultsRows.add(submissionVals);
+            }
+                        
+            //Insert rows
+            conn.insertRows("results", resultsColumns, resultsRows);
             
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(QuestionGenServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-            
         
-        
+        //display score to the user
         
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {

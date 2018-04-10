@@ -25,10 +25,12 @@ CREATE TABLE results
 (
     results_id INT PRIMARY KEY AUTO_INCREMENT,
     submission_id INT NOT NULL,
-    question_text VARCHAR(255),
+    dictionary_id INT NOT NULL,
+    question_type INT NOT NULL,
     user_answer VARCHAR(255),
     correct_answer VARCHAR(255),
-    FOREIGN KEY (submission_id) REFERENCES submissions(submission_id) ON UPDATE CASCADE ON DELETE CASCADE); 
+    FOREIGN KEY (submission_id) REFERENCES submissions(submission_id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (dictionary_id) REFERENCES dictionary(dictionary_id) ON UPDATE CASCADE ON DELETE CASCADE);
 
 CREATE TABLE sessions
 (session_id VARCHAR(255) PRIMARY KEY,
