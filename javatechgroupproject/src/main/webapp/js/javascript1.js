@@ -10,7 +10,18 @@ function createTestObj()
     {
         var qType = document.getElementById("question" + i).getAttribute("qType");
         
-        if(qType !== "3")
+        if(qType === "2")
+        {
+            var userInputString = document.getElementById("userInput" + i).value;
+            var wordID = document.getElementById("userInput" + i).getAttribute("wordId");
+            
+            var userGenderInput = $('input[name="questRadio' + i +'"]:checked').val();
+            
+            var aQuestion = new Question(wordID, qType, userInputString);
+            aQuestion.setUserGenderInput(userGenderInput);
+            questions.push(aQuestion);
+        }        
+        else if(qType !== "3")
         {
             var userInputString = document.getElementById("userInput" + i).value;
             var wordID = document.getElementById("userInput" + i).getAttribute("wordId");
@@ -29,6 +40,8 @@ function createTestObj()
             var userInputString = $('input[name="questRadio' + i +'"]:checked').val();
             //var wordID = $('input[name="questRadio' + i +'"]').val();
             var wordID = document.getElementsByName("questRadio" + i)[0].getAttribute("wordId");
+            
+            
             
            
             /*console.log("Question:" + i);
@@ -74,7 +87,8 @@ class Question
     {
         this.wordId = wordId;
         this.questionType = questionType;
-        this.userAnswer = userAnswer;             
+        this.userAnswer = userAnswer; 
+        this.userGenderInput = null;
     }
     
     getWordID()
@@ -88,6 +102,14 @@ class Question
     getUserInput()
     {
         return userAnswer;
+    }
+    setUserGenderInput(userGenderInput)
+    {
+        this.userGenderInput = userGenderInput;
+    }
+    getUserGenderInput()
+    {
+        return userGenderInput;
     }
 }
 

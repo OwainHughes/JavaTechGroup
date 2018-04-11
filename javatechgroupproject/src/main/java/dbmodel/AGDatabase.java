@@ -554,9 +554,11 @@ public class AGDatabase {
                     String wordId = tempObj.getString("wordId");
                     String qType = tempObj.getString("questionType");
                     String userAnswer;
+                    String userGenderInput = "";
 
                     try{
                     userAnswer = tempObj.getString("userAnswer");
+                    userGenderInput = tempObj.getString("userGenderInput");
                     }catch(org.json.JSONException e)
                     {
                         userAnswer = "";
@@ -568,13 +570,14 @@ public class AGDatabase {
                     //generate sql statement
 
                     String correctAnswerCol = "";
+                    String correctGender = "";
                     if(qType.equals("1"))
                     {
                         correctAnswerCol = "welsh_word";
                     }
                     else if(qType.equals("2"))
                     {
-                        correctAnswerCol = "english_word";
+                        correctAnswerCol = "english_word";                        
                     }
                     else
                     {
@@ -587,8 +590,23 @@ public class AGDatabase {
                     String correctAnswer = rs.getString(1);
                     if(userAnswer.equals(correctAnswer))
                     {
-                        score++;
+                        if(qType.equals("2"))
+                        {
+                            PreparedStatement pstat1 = conn.prepareStatement("SELECT gender FROM dictionary WHERE dictionary_id = " + wordId.substring(4));
+                            ResultSet rs1 = pstat1.executeQuery();
+                            rs.next();
+                            String cG= rs.getString(1);
+                            if(userGenderInput.equals(cG))
+                            {
+                                score++;
+                            }
+                        }
+                        else
+                        {
+                            score++;
+                        }
                     }
+                    
                     
                     //add the answers to the list
                     Answers a = new Answers(qType,userAnswer,correctAnswer,wordId.replace("word", ""));
