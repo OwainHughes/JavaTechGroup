@@ -40,6 +40,10 @@
         <servlet-name>EditUserServlet</servlet-name>
         <servlet-class>com.mycompany.javatechgroupproject.EditUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>QuizAnswersServlet</servlet-name>
+        <servlet-class>com.mycompany.javatechgroupproject.QuizAnswersServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DictionaryServlet</servlet-name>
         <url-pattern>/DictionaryServlet</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>EditUserServlet</servlet-name>
         <url-pattern>/EditUserServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>QuizAnswersServlet</servlet-name>
+        <url-pattern>/QuizAnswersServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

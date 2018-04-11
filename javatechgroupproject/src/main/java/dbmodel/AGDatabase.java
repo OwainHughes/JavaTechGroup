@@ -58,7 +58,7 @@ public class AGDatabase {
                 Statement stat = conn.createStatement();
                 ResultSet rs = stat.executeQuery("SELECT * FROM "+table);
 
-                return printTable(rs);
+                return printTable(rs,true);
                 //print table
                 //printTable(rs);
             } 
@@ -71,6 +71,52 @@ public class AGDatabase {
                 Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        return "fail";
+    }
+    
+    /**
+     * Returns the answers associated with a quiz as a HTML table. 
+     */
+    public String getAnswersTableHTML(int submission_id)
+    {
+        
+        try{
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+            
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement(
+                "SELECT case "+
+                        "when question_type = 1 then concat('What is the Welsh word for ',english_word) "+
+                        "when question_type = 2 then concat('What is the English word for ',welsh_word) "+
+                        "when question_type = 3 then concat('What is the gender of the Welsh word ',welsh_word) "+
+                    "end as question,"+
+                "user_answer,correct_answer "+
+                "from results as x "+
+                "inner join dictionary as y on x.dictionary_id = y.dictionary_id "+
+                "where submission_id = ?");
+                
+                //add parameters specified by user
+                pstat.setInt(1, submission_id);
+
+                //select from table
+                ResultSet rs  = pstat.executeQuery();
+                
+                return printTable(rs,false);
+
+            }
+            finally
+            {
+                //close the connection
+                conn.close();
+            }
+        }
+        catch (SQLException ex)
+        {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return "fail";
     }
     
@@ -90,7 +136,7 @@ public class AGDatabase {
                 Statement stat = conn.createStatement();
                 ResultSet rs = stat.executeQuery("SELECT * FROM "+table+" ORDER BY "+sortingColumn+" ASC");
 
-                return printTable(rs);
+                return printTable(rs,true);
             } 
             finally
             {
@@ -120,7 +166,7 @@ public class AGDatabase {
                 Statement stat = conn.createStatement();
                 ResultSet rs = stat.executeQuery("SELECT user_id,username,'******' as passwords,role FROM users ORDER BY username ASC");
 
-                return printTable(rs);
+                return printTable(rs,true);
             } 
             finally
             {
@@ -139,7 +185,7 @@ public class AGDatabase {
      * @param rs the results set
      * @throws SQLException 
      */
-    private String printTable(ResultSet rs) throws SQLException
+    private String printTable(ResultSet rs,boolean includeActions) throws SQLException
     {
         //get metadata
         ResultSetMetaData md = rs.getMetaData();
@@ -158,7 +204,11 @@ public class AGDatabase {
             table+= ("<th>"+md.getColumnLabel(i)+"</th>");
         }
         
-        table+= ("<th class=\"actions\">Actions</th>");
+        if(includeActions)
+        {
+            table+= ("<th class=\"actions\">Actions</th>");
+        }
+        
         
         table+=("</tr>");
         
@@ -173,8 +223,11 @@ public class AGDatabase {
                 //if (i > 1)
                 table+=("<td>"+rs.getString(i)+"</td>");
             }
-            table+=("<td class=\"actions\"><div class=\"editIcon\" ><span class=\"glyphicon glyphicon glyphicon-edit\" data-toggle=\"modal\" data-target=\"#editModal\">");
-            table+=("</span></div><div class=\"deleteIcon\" ><span class=\"glyphicon glyphicon-remove-sign\" data-toggle=\"modal\" data-target=\"#deleteModal\"></span></div></td>");
+            if(includeActions)
+            {
+                table+=("<td class=\"actions\"><div class=\"editIcon\" ><span class=\"glyphicon glyphicon glyphicon-edit\" data-toggle=\"modal\" data-target=\"#editModal\">");
+                table+=("</span></div><div class=\"deleteIcon\" ><span class=\"glyphicon glyphicon-remove-sign\" data-toggle=\"modal\" data-target=\"#deleteModal\"></span></div></td>");
+            }
             table+=("</tr>");
         }
         
@@ -417,47 +470,6 @@ public class AGDatabase {
     }
     
     
-    
-    /**
-     * Inserts a new session into the database
-     */
-    public String recordSession(User user)
-    {
-        //create cookie to record login
-        String sessionid = UUID.randomUUID().toString();
-            
-        try {
-                        
-            //create variables
-            Connection conn = SimpleDataSource.getConnection();
-            
-            //update rows in database
-            try {
-                //generate sql statement
-                PreparedStatement pstat = conn.prepareStatement(
-                        "INSERT INTO sessions"
-                                + " VALUES(?,?);");
-                
-                //add parameters specified by user
-                pstat.setString(1, sessionid);
-                pstat.setInt(2, user.getUserid());
-                
-                //print table
-                pstat.executeUpdate();
-            }
-            finally{
-                conn.close();
-            }
-            
-           
-        }
-        catch (SQLException ex) {
-            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         //return new sessionid
-         return sessionid;
-    }
-    
     /**
      * Return user associated with a session id
      */
@@ -511,7 +523,13 @@ public class AGDatabase {
          return user;
     }
 
-    
+    /**
+     * Formats the JSONArray associated with a quiz submission, and returns an object
+     * holding the answers and score.
+     * @param jArray
+     * @param user
+     * @return 
+     */
     public Submission checkAnswer(JSONArray jArray, User user)
     {
         //create list to hold answers

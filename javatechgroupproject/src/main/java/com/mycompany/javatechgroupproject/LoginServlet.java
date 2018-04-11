@@ -8,6 +8,7 @@ package com.mycompany.javatechgroupproject;
 import dbmodel.AGDatabase;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,7 +65,6 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -116,7 +116,15 @@ public class LoginServlet extends HttpServlet {
             //check if user exists
             if(user.getUserid()>-1)
             {
-                String sessionid = dbConn.recordSession(user);
+                //create cookie to record login
+                String sessionid = UUID.randomUUID().toString();
+                
+                String[] columns = {"user_id","session_id"};
+                String[] values = {""+user.getUserid(),sessionid};
+                ArrayList<String[]> rows = new ArrayList<String[]>();
+                rows.add(values);
+                
+                dbConn.insertRows("sessions", columns, rows);
                 
                 //pass to process request
                 processRequest(request, response, userName, sessionid);
