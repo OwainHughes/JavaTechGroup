@@ -275,3 +275,11 @@ input[type=radio]
 	margin-bottom:2%;
 	padding:5px;
 }
+
+.glyphicon-remove{
+   color:red;
+}
+
+.glyphicon-ok{
+   color:green;
+}

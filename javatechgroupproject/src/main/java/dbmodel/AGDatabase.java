@@ -84,6 +84,9 @@ public class AGDatabase {
             //create variables
             Connection conn = SimpleDataSource.getConnection();
             
+            String spanOpen = "'<span class=\"glyphicon glyphicon-'";
+            String spanClose = "'\"></span>'";
+            
             //update rows in database
             try {
                 //generate sql statement
@@ -92,8 +95,11 @@ public class AGDatabase {
                         "when question_type = 1 then concat('What is the Welsh word for ',english_word) "+
                         "when question_type = 2 then concat('What is the English word for ',welsh_word) "+
                         "when question_type = 3 then concat('What is the gender of the Welsh word ',welsh_word) "+
-                    "end as question,"+
-                "user_answer,correct_answer "+
+                    "end as Question,"+
+                "user_answer as 'User Answer',"+
+                "correct_answer as 'Correct Answer', concat("+spanOpen+","+
+                "case when (user_answer=correct_answer)=1 then 'ok' else 'remove' end,"+spanClose+")"+
+                " as Correct "+
                 "from results as x "+
                 "inner join dictionary as y on x.dictionary_id = y.dictionary_id "+
                 "where submission_id = ?");
@@ -234,7 +240,7 @@ public class AGDatabase {
         table+="<table>";
         
         return table;
-    }
+    }    
     
     /**
      * Deletes a record from a specified table according to a single column

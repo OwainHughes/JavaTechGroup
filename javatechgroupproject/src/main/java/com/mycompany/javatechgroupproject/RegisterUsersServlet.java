@@ -160,7 +160,7 @@ public class RegisterUsersServlet extends HttpServlet {
             "    </div>\n" +
             "  </div>");
             
-            out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\"><span class=\"glyphicon glyphicon-plus\"> </span> Add word</button>");
+            out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\"><span class=\"glyphicon glyphicon-plus\"> </span> Add User</button>");
 
             try {
                 AGDatabase db = new AGDatabase();
