@@ -553,7 +553,7 @@ public class AGDatabase {
                     JSONObject tempObj = (JSONObject)jArray.get(i);
                     String wordId = tempObj.getString("wordId");
                     String qType = tempObj.getString("questionType");
-                    String userAnswer;
+                    String userAnswer = "";
                     String userGenderInput = "";
 
                     try{
@@ -561,7 +561,7 @@ public class AGDatabase {
                     userGenderInput = tempObj.getString("userGenderInput");
                     }catch(org.json.JSONException e)
                     {
-                        userAnswer = "";
+                        System.out.println(e);
                     }
                     System.out.println(wordId + " " + qType + " " + userAnswer);
 
@@ -594,8 +594,8 @@ public class AGDatabase {
                         {
                             PreparedStatement pstat1 = conn.prepareStatement("SELECT gender FROM dictionary WHERE dictionary_id = " + wordId.substring(4));
                             ResultSet rs1 = pstat1.executeQuery();
-                            rs.next();
-                            String cG= rs.getString(1);
+                            rs1.next();
+                            String cG= rs1.getString(1);
                             if(userGenderInput.equals(cG))
                             {
                                 score++;
