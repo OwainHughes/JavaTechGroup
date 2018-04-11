@@ -10,7 +10,7 @@ VALUES
 ('5','bysellfwrdd','keyboard','male'),
 ('6','heddlu','police','male'),
 ('7','gwr','husband','male'),
-('8','graig','wife','female'),
+('8','gwraig','wife','female'),
 ('9','buwch','cow','female'),
 ('10','tarw','bull','male'),
 ('11','esgid','shoe','female'),

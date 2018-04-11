@@ -190,6 +190,7 @@ public class QuestionGenServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String submissionIdString = "";
         
         User user = null;
         //authenticate user
@@ -231,6 +232,7 @@ public class QuestionGenServlet extends HttpServlet {
             
             //insert & return pk
             int submission_id = conn.insertRows("submissions", columnArray, rows).get(0);
+            submissionIdString = "" + submission_id;
             System.out.println("submission id="+submission_id);
             
            //insert submission
@@ -259,7 +261,7 @@ public class QuestionGenServlet extends HttpServlet {
         
         //display score to the user
         
-        response.setContentType("text/html;charset=UTF-8");
+       /* response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
@@ -276,7 +278,9 @@ public class QuestionGenServlet extends HttpServlet {
         out.println("<h1>Post Recieved     Score:" + score +"</h1>");
         out.println("</body>");
         out.println("</html>");
-        }
+        }*/
+        
+        response.sendRedirect("/javatechgroupproject/QuizAnswersServlet?submission_id=" + submissionIdString);
     }
 
     /**

@@ -555,10 +555,13 @@ public class AGDatabase {
                     String qType = tempObj.getString("questionType");
                     String userAnswer = "";
                     String userGenderInput = "";
+                    String cG = "";
 
                     try{
                     userAnswer = tempObj.getString("userAnswer");
                     userGenderInput = tempObj.getString("userGenderInput");
+                    
+                    
                     }catch(org.json.JSONException e)
                     {
                         System.out.println(e);
@@ -588,14 +591,16 @@ public class AGDatabase {
                     ResultSet rs = pstat.executeQuery();
                     rs.next();
                     String correctAnswer = rs.getString(1);
+                    PreparedStatement pstat1 = conn.prepareStatement("SELECT gender FROM dictionary WHERE dictionary_id = " + wordId.substring(4));
+                    ResultSet rs1 = pstat1.executeQuery();
+                    rs1.next();
+                    cG= rs1.getString(1);
+                    
                     if(userAnswer.equals(correctAnswer))
                     {
                         if(qType.equals("2"))
                         {
-                            PreparedStatement pstat1 = conn.prepareStatement("SELECT gender FROM dictionary WHERE dictionary_id = " + wordId.substring(4));
-                            ResultSet rs1 = pstat1.executeQuery();
-                            rs1.next();
-                            String cG= rs1.getString(1);
+                           
                             if(userGenderInput.equals(cG))
                             {
                                 score++;
@@ -607,10 +612,23 @@ public class AGDatabase {
                         }
                     }
                     
+                    if(qType.equals("2"))
+                    {
+                        if(!userGenderInput.equals(""))
+                        {
+                            userGenderInput = " (" + userGenderInput + ") ";
+                        
+                        }
+                        //add the answers to the list
+                        cG = " (" + cG + ") ";
+                    }
+                    else
+                    {
+                        cG = "";
+                    }
+                        Answers a = new Answers(qType,userAnswer+userGenderInput,correctAnswer+cG,wordId.replace("word", ""));
                     
-                    //add the answers to the list
-                    Answers a = new Answers(qType,userAnswer,correctAnswer,wordId.replace("word", ""));
-                    answers.add(a);
+                        answers.add(a);
                 }
             }
             finally
