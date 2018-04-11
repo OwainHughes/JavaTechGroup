@@ -46,7 +46,7 @@ public class AGDatabase {
      * Returns HTML for a specific table
      * @param table
      */
-    public String getTableHTML(String table)
+    public String getTableHTML(String table, boolean includeActions)
     {
 
         try{
@@ -58,7 +58,7 @@ public class AGDatabase {
                 Statement stat = conn.createStatement();
                 ResultSet rs = stat.executeQuery("SELECT * FROM "+table);
 
-                return printTable(rs,true);
+                return printTable(rs,includeActions);
                 //print table
                 //printTable(rs);
             } 
@@ -160,6 +160,43 @@ public class AGDatabase {
      * Returns HTML for a specific table, sorted by a specific column
      * @param table
      */
+    public String getSubmissionsTableHTML(int user_id)
+    {
+        
+        try{
+             //create variables
+            Connection conn = SimpleDataSource.getConnection();
+
+            //get resultset from database
+            try 
+            {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement("SELECT submission_id, creation_date, score FROM submissions WHERE user_id = ?");
+
+                //add parameters specified by user
+                pstat.setInt(1, user_id);
+
+                //update table
+                ResultSet rs = pstat.executeQuery();
+                
+                return printResultsTable(rs);
+            } 
+            finally
+            {
+                conn.close();
+            }
+        }
+        catch (SQLException ex) {
+                Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "fail";
+    }
+    
+    /**
+     * Returns HTML for a specific table, sorted by a specific column
+     * @param table
+     */
     public String getUserTableHTML()
     {
 
@@ -185,6 +222,56 @@ public class AGDatabase {
         
         return "fail";
     }
+    
+    /**
+     * Formats a ResultSet as a HTML table
+     * @param rs the results set
+     * @throws SQLException 
+     */
+    private String printResultsTable(ResultSet rs) throws SQLException
+    {
+        //get metadata
+        ResultSetMetaData md = rs.getMetaData();
+
+        //get number of columns
+        int columnCount = md.getColumnCount();
+        
+        String table = "<table>";
+        
+        table+=("<tr>");
+        
+        //print column headers
+        table+= ("<th>Quiz Number</th>");
+        table+= ("<th>Date</th>");
+        table+= ("<th>Score</th>");
+                
+        
+        table+=("</tr>");
+        
+        
+        int rowNum = 1;
+        //loop to print the table
+        while (rs.next())
+        {
+            table+=("<tr id=\"row"+rs.getString(1)+"\" class=\"clickableRow\" data-href=\"QuizAnswersServlet?submission_id="+rs.getString(1)+"\">");
+            //dynamically adjusts according to number of columns in metadata
+            for(int i=1; i <= columnCount; i++)
+            {
+                if (i > 1)
+                    table+=("<td>"+rs.getString(i)+"</td>");
+                else
+                    table+=("<td>Quiz "+rowNum+"</td>");
+                
+                rowNum++;
+            }
+           
+            table+=("</tr>");
+        }
+        
+        table+="<table>";
+        
+        return table;
+    }    
     
     /**
      * Formats a ResultSet as a HTML table

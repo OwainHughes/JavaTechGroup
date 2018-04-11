@@ -9,6 +9,11 @@ $(document).ready(function() {
     
     setEventListeners();
 
+    //function to make a row clickable
+    $(".clickableRow").click(function(){
+        window.location.href=$(this).attr("data-href");
+    });
+    
     //add the row from a table
     $("#addWordDB").click(function() {
         //alert("detected");
