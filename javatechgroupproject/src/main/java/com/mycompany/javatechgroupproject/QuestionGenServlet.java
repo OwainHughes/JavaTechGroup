@@ -148,6 +148,8 @@ public class QuestionGenServlet extends HttpServlet {
         {
             toReturn += "<h1>Q" + (questNum) + ") What is the English word for \"" + word.getWelshWord() + "\"?</h1>";
             toReturn += "<input id=\"userInput"+ questNum +"\" type='text'  wordId=\"word" + word.getId() + "\">";
+            toReturn += "<input type='radio' class=\"gender\" name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='male'><span class=\"gender\">Male</span>";
+            toReturn += "<input type='radio' class=\"gender\" name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='female'><span class=\"gender\">Female</span>";
         }
         else
         {
