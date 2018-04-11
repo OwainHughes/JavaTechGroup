@@ -88,7 +88,7 @@ class Question
         this.wordId = wordId;
         this.questionType = questionType;
         this.userAnswer = userAnswer; 
-        this.userGenderInput = null;
+        this.userGenderInput = "";
     }
     
     getWordID()
