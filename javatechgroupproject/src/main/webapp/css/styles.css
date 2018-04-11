@@ -283,3 +283,18 @@ input[type=radio]
 .glyphicon-ok{
    color:green;
 }
+
+
+.content {
+    text-align: center;
+}
+
+.Userimage {
+    background-color: #5b985b;
+    color: #e3e3e3;
+    padding:15px;
+    
+}
+.helpForm {
+    text-align: center;
+}
