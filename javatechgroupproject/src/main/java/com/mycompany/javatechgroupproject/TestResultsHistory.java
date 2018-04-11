@@ -53,7 +53,7 @@ public class TestResultsHistory extends HttpServlet {
             out.println("<body>");
             
             //print current user
-            out.println("<span class=\"glyphicon glyphicon-user\">"+username+"</span>");
+            out.println("<span class=\"glyphicon glyphicon-user username\">"+username+"</span>");
                         
             //header banner
             out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
@@ -72,7 +72,6 @@ public class TestResultsHistory extends HttpServlet {
             out.println("<h2><span class=\"glyphicon glyphicon-education\"></span>  Quiz Scores: <span class=\"h2HL\">"+u.getUsername()+"</span></h1>");
             out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Quizzes Taken:</span> 0 </p>");
             out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Average Score: </span> 0 <br/></p>");
-            
             out.println("<p class=\"pageDescription\">Click on a quiz attempt to see its answers.</p>");
                         
             out.println(db.getSubmissionsTableHTML(userId));

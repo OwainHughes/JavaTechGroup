@@ -57,7 +57,7 @@ public class DictionaryServlet extends HttpServlet {
             out.println("<body>");
             
             //print current user
-            out.println("<span class=\"glyphicon glyphicon-user\">"+username+"</span>");
+            out.println("<span class=\"glyphicon glyphicon-user username\">"+username+"</span>");
                         
             //header banner
             out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
@@ -68,7 +68,10 @@ public class DictionaryServlet extends HttpServlet {
             
             out.println("<div class=\"tabGUI\">");
             
-            
+             //print page decriptions
+            out.println("<h2><span class=\"glyphicon glyphicon-text-background\"></span>  Dictionary: <span class=\"h2HL\"></span></h1>");
+            out.println("<p class=\"pageDescription\">You can use this page to add, edit, and delete words.</p>");
+           
             //print the add modal form.
             out.println("<div class=\"modal fade\" id=\"addModal\" role=\"dialog\" style=\"display: none;\">\n" +
                     "    <div class=\"modal-dialog\">\n" +

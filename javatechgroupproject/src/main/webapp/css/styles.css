@@ -78,7 +78,7 @@ span:hover > .glyphicon-remove-sign{
         padding:10px;
         background-color: #5b985b;
         color:white;
-        margin-bottom:3%;
+        margin-top: 4%;
         cursor: pointer;
 }
 
@@ -176,7 +176,7 @@ h1{
 	float: right;
 }
 
-.glyphicon-user{
+.username{
 	margin-top:0.5%;
 	margin-right:0.5%;
 	font-size:120%;

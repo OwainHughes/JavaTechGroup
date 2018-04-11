@@ -54,7 +54,7 @@ public class StudentOverview extends HttpServlet {
             out.println("<body>");
             
             //print current user
-            out.println("<span class=\"glyphicon glyphicon-user\">"+username+"</span>");
+            out.println("<span class=\"glyphicon glyphicon-user username\">"+username+"</span>");
                         
             //header banner
             out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");

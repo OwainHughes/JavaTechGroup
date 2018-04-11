@@ -51,7 +51,7 @@ public class RegisterUsersServlet extends HttpServlet {
             out.println("<body>");
             
             //print current user
-            out.println("<span class=\"glyphicon glyphicon-user\">"+username+"</span>");
+            out.println("<span class=\"glyphicon glyphicon-user username\">"+username+"</span>");
             
             //header banner
             out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
@@ -160,6 +160,11 @@ public class RegisterUsersServlet extends HttpServlet {
             "    </div>\n" +
             "  </div>");
             
+            
+            //print page decriptions
+            out.println("<h2><span class=\"glyphicon glyphicon-user\"></span>  User Management: <span class=\"h2HL\"></span></h1>");
+            out.println("<p class=\"pageDescription\">You can use this page to create, edit, and delete users.</p>");
+            
             out.println("<button type=\"button\" class=\"addButton\" data-toggle=\"modal\" data-target=\"#addModal\"><span class=\"glyphicon glyphicon-plus\"> </span> Add User</button>");
 
             try {
@@ -174,7 +179,6 @@ public class RegisterUsersServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
