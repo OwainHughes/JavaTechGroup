@@ -280,7 +280,7 @@ public class QuestionGenServlet extends HttpServlet {
         out.println("</html>");
         }*/
         
-        response.sendRedirect("/javatechgroupproject/QuizAnswersServlet?submission_id=" + submissionIdString);
+        response.sendRedirect("/javatechgroupproject/QuizAnswersServlet?id=" + submissionIdString);
     }
 
     /**

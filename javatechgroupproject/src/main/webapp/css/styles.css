@@ -15,6 +15,7 @@ table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    margin-top:3%;
 }
 
 td, th {
@@ -35,7 +36,7 @@ tr:nth-child(odd) {
     background-color:whitesmoke;
 }
 
-tr:hover{
+.clickableRow:hover{
 	background-color:#c3c3c3;
 	cursor:pointer;
 }
@@ -300,6 +301,31 @@ input[type=radio]
     padding:15px;
     
 }
+
 .helpForm {
     text-align: center;
+}
+
+h2{
+	color: #5b985b !important;
+	border-bottom: 2px #e3e3e3 solid;
+        font-weight:bold !important;
+}
+
+.pageDescription{
+	font-size:0.95em;
+	margin-top:1%;
+	margin-bottom:1%;
+	color:#afadad;
+}
+
+.h2HL{
+    color:#afadad;
+}
+
+.pageStats{
+	color: grey;
+	font-weight:bold;
+	display: inline-block;
+	min-width:120px;
 }

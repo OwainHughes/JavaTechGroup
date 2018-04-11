@@ -91,11 +91,11 @@ public class AGDatabase {
             try {
                 //generate sql statement
                 PreparedStatement pstat = conn.prepareStatement(
-                "SELECT case "+
+                "SELECT concat(case "+
                         "when question_type = 1 then concat('What is the Welsh word for ',english_word) "+
                         "when question_type = 2 then concat('What is the English word for ',welsh_word) "+
                         "when question_type = 3 then concat('What is the gender of the Welsh word ',welsh_word) "+
-                    "end as Question,"+
+                    "end,'?') as Question,"+
                 "user_answer as 'User Answer',"+
                 "correct_answer as 'Correct Answer', concat("+spanOpen+","+
                 "case when (user_answer=correct_answer)=1 then 'ok' else 'remove' end,"+spanClose+")"+
@@ -171,7 +171,7 @@ public class AGDatabase {
             try 
             {
                 //generate sql statement
-                PreparedStatement pstat = conn.prepareStatement("SELECT submission_id, creation_date, score FROM submissions WHERE user_id = ?");
+                PreparedStatement pstat = conn.prepareStatement("SELECT submission_id as 'Quiz Number', creation_date as Date, Score FROM submissions WHERE user_id = ?");
 
                 //add parameters specified by user
                 pstat.setInt(1, user_id);
@@ -179,7 +179,7 @@ public class AGDatabase {
                 //update table
                 ResultSet rs = pstat.executeQuery();
                 
-                return printResultsTable(rs);
+                return printClickableTable(rs,"QuizAnswersServlet");
             } 
             finally
             {
@@ -224,11 +224,47 @@ public class AGDatabase {
     }
     
     /**
+     * Returns HTML for a specific table, sorted by a specific column
+     * @param table
+     */
+    public String getUserTableScoreHTML()
+    {
+
+        try{
+             //create variables
+            Connection conn = SimpleDataSource.getConnection();
+
+            //get resultset from database
+            try {
+                Statement stat = conn.createStatement();
+                ResultSet rs = stat.executeQuery(
+                "SELECT x.User_id, Username, " +
+                "CASE WHEN Y.user_id IS NULL THEN 'N/A' " +
+                "ELSE Concat(ROUND(AVG(score),2),'%') " +
+                "END AS 'Average Score' " +
+                "FROM users AS x LEFT JOIN submissions AS y ON x.user_id=y.user_id " +
+                "GROUP BY x.user_id,username;");
+
+                return printClickableTable(rs,"TestResultsHistory");
+            } 
+            finally
+            {
+                conn.close();
+            }
+        }
+        catch (SQLException ex) {
+                Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return "fail";
+    }
+    
+    /**
      * Formats a ResultSet as a HTML table
      * @param rs the results set
      * @throws SQLException 
      */
-    private String printResultsTable(ResultSet rs) throws SQLException
+    private String printClickableTable(ResultSet rs, String url) throws SQLException
     {
         //get metadata
         ResultSetMetaData md = rs.getMetaData();
@@ -241,9 +277,11 @@ public class AGDatabase {
         table+=("<tr>");
         
         //print column headers
-        table+= ("<th>Quiz Number</th>");
-        table+= ("<th>Date</th>");
-        table+= ("<th>Score</th>");
+        for(int i=1; i <= columnCount; i++) 
+        {
+            //if (i > 1)
+            table+= ("<th>"+md.getColumnLabel(i)+"</th>");
+        }
                 
         
         table+=("</tr>");
@@ -253,19 +291,18 @@ public class AGDatabase {
         //loop to print the table
         while (rs.next())
         {
-            table+=("<tr id=\"row"+rs.getString(1)+"\" class=\"clickableRow\" data-href=\"QuizAnswersServlet?submission_id="+rs.getString(1)+"\">");
+            table+=("<tr id=\"row"+rs.getString(1)+"\" class=\"clickableRow\" data-href=\""+url+"?id="+rs.getString(1)+"\">");
             //dynamically adjusts according to number of columns in metadata
             for(int i=1; i <= columnCount; i++)
             {
                 if (i > 1)
                     table+=("<td>"+rs.getString(i)+"</td>");
                 else
-                    table+=("<td>Quiz "+rowNum+"</td>");
-                
-                rowNum++;
+                    table+=("<td>"+rowNum+"</td>");                
             }
            
             table+=("</tr>");
+            rowNum++;
         }
         
         table+="<table>";
@@ -402,6 +439,103 @@ public class AGDatabase {
         }
         
         return user;
+    }
+    
+    /**
+     * Return user associated with a session id
+     */
+    public User getUserById(int userId)
+    {
+        //create cookie to record login
+        User user = new User(-1,"","");
+            
+        try {
+                        
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+            
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement(
+                        "SELECT * FROM users "
+                       +"WHERE user_id = ?");
+                
+                //add parameters specified by user
+                pstat.setInt(1, userId);
+                
+                System.out.println(pstat.toString());
+                
+                //get table table
+                ResultSet rs = pstat.executeQuery();
+                
+                while(rs.next())
+                {
+                    //set user object to corresponding user
+                    user = new User(Integer.parseInt(rs.getString("user_id")),
+                                    rs.getString("username"),
+                                    rs.getString("role"));
+                    user.setValid(true);
+                }                
+            }
+            finally{
+                conn.close();
+            }
+            
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         //return user
+         return user;
+    }
+    
+    /**
+     * Return submission associated with a submission id
+     */
+    public Submission getSubmissionById(int submissionId)
+    {
+        //create cookie to record login
+        Submission s = null;
+            
+        try {
+                        
+            //create variables
+            Connection conn = SimpleDataSource.getConnection();
+            
+            //update rows in database
+            try {
+                //generate sql statement
+                PreparedStatement pstat = conn.prepareStatement(
+                        "SELECT * FROM submissions "
+                       +"WHERE submission_id = ?");
+                
+                //add parameters specified by user
+                pstat.setInt(1, submissionId);
+                
+                System.out.println(pstat.toString());
+                
+                //get table table
+                ResultSet rs = pstat.executeQuery();
+                
+                while(rs.next())
+                {
+                    //public Submission(int score,int userId, String date, ArrayList<Answers> answers) {
+    
+                    s = new Submission(rs.getInt("score"),rs.getInt("user_id"),rs.getString("creation_date"),new ArrayList<Answers>());
+                    
+                }                
+            }
+            finally{
+                conn.close();
+            }
+            
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         //return submission
+         return s;
     }
     
     /**
@@ -730,7 +864,7 @@ public class AGDatabase {
         }
         
         //create a submission object to hold the answers & score
-        Submission s = new Submission(score, answers);
+        Submission s = new Submission(score,user.getUserid(),"",answers);
         
         return s;
     }

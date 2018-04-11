@@ -21,7 +21,7 @@ import model.User;
  *
  * @author Levi
  */
-public class TestResultsHistory extends HttpServlet {
+public class StudentOverview extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,6 +34,7 @@ public class TestResultsHistory extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response, String username)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
              AGDatabase db = new AGDatabase();
@@ -63,19 +64,11 @@ public class TestResultsHistory extends HttpServlet {
             out.println("<div id=\"headerLine\"></div>");
             
             out.println("<div class=\"tabGUI\">");
+            out.println("<h2><span class=\"glyphicon glyphicon-stats\"></span>  Student Performance Overview</h1>");
+            out.println("<p class=\"pageDescription\">Click on a student to see the quizzes they have completed.</p>");
+            //int submission_id = Integer.parseInt(request.getParameter("submission_id"));
             
-            //Get username of this page's user.
-            int userId = Integer.parseInt(request.getParameter("id"));
-            User u = db.getUserById(userId);
-            
-            //print page decriptions
-            out.println("<h2><span class=\"glyphicon glyphicon-education\"></span>  Quiz Scores: <span class=\"h2HL\">"+u.getUsername()+"</span></h1>");
-            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Quizzes Taken:</span> 0 </p>");
-            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Average Score: </span> 0 <br/></p>");
-            
-            out.println("<p class=\"pageDescription\">Click on a quiz attempt to see its answers.</p>");
-                        
-            out.println(db.getSubmissionsTableHTML(userId));
+            out.println(db.getUserTableScoreHTML());
             
             out.println("</div>");
             out.println("</body>");
@@ -97,7 +90,6 @@ public class TestResultsHistory extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) 
         {
@@ -118,7 +110,6 @@ public class TestResultsHistory extends HttpServlet {
         {
             Logger.getLogger(DictionaryServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
     }
 
     /**

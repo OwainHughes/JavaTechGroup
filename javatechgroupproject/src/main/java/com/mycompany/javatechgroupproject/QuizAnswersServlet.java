@@ -18,6 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Submission;
 import model.User;
 
 /**
@@ -68,7 +69,19 @@ public class QuizAnswersServlet extends HttpServlet {
             
             out.println("<div class=\"tabGUI\">");
             
-            int submission_id = Integer.parseInt(request.getParameter("submission_id"));
+            //get id of current quiz
+            int submission_id = Integer.parseInt(request.getParameter("id"));
+            Submission s = db.getSubmissionById(submission_id);
+            int score = s.getScore();
+            User u = db.getUserById(s.getUserId());
+            
+            //print page decriptions
+            out.println("<h2><span class=\"glyphicon glyphicon-list-alt\"></span>  Answers <span class=\"h2HL\"></span></h1>");
+            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Username:</span>"+u.getUsername()+"</p>");
+            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Score: </span>"+score+" of 20 <br/></p>");
+            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Date: </span>"+s.getDate().replace("-","/")+"<br/></p>");
+            
+            
             
             out.println(db.getAnswersTableHTML(submission_id));
             
