@@ -56,6 +56,10 @@
         <servlet-name>HomePageServlet</servlet-name>
         <servlet-class>com.mycompany.javatechgroupproject.HomePageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.mycompany.javatechgroupproject.LogoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DictionaryServlet</servlet-name>
         <url-pattern>/DictionaryServlet</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>HomePageServlet</servlet-name>
         <url-pattern>/HomePageServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

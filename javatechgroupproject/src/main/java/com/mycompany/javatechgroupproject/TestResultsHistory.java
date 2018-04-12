@@ -37,6 +37,7 @@ public class TestResultsHistory extends HttpServlet {
         
         User user = null;
         int userID = 0;
+        int urlID = Integer.parseInt(request.getParameter("id"));
         
         try 
         {
@@ -48,7 +49,10 @@ public class TestResultsHistory extends HttpServlet {
         {
             Logger.getLogger(HomePageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        if(userID != urlID)
+        {
+            response.sendRedirect("/javatechgroupproject/HomePageServlet");            
+        }
         
         try (PrintWriter out = response.getWriter()) {
             
