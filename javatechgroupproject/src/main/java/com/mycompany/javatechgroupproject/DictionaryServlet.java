@@ -68,8 +68,8 @@ public class DictionaryServlet extends HttpServlet {
             
             out.println("<div class=\"tabGUI\">");
             
-             //print page decriptions
-            out.println("<h2><span class=\"glyphicon glyphicon-text-background\"></span>  Dictionary: <span class=\"h2HL\"></span></h1>");
+            //print page decriptions
+            out.println("<h2><span class=\"glyphicon glyphicon-th-list\"></span>  Dictionary: <span class=\"h2HL\"></span></h1>");
             out.println("<p class=\"pageDescription\">You can use this page to add, edit, and delete words.</p>");
            
             //print the add modal form.

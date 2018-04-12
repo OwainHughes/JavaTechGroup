@@ -68,13 +68,16 @@ public class TestResultsHistory extends HttpServlet {
             int userId = Integer.parseInt(request.getParameter("id"));
             User u = db.getUserById(userId);
             
+            //get table html
+            String table = db.getSubmissionsTableHTML(userId);
+            
             //print page decriptions
             out.println("<h2><span class=\"glyphicon glyphicon-education\"></span>  Quiz Scores: <span class=\"h2HL\">"+u.getUsername()+"</span></h1>");
-            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Quizzes Taken:</span> 0 </p>");
-            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Average Score: </span> 0 <br/></p>");
+            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Quizzes Taken:</span> "+u.getTests_taken()+" </p>");
+            out.println("<p class=\"pageDescription\"><span class=\"pageStats\">Average Score: </span> "+u.getScore()+" <br/></p>");
             out.println("<p class=\"pageDescription\">Click on a quiz attempt to see its answers.</p>");
-                        
-            out.println(db.getSubmissionsTableHTML(userId));
+                                  
+            out.println(table);
             
             out.println("</div>");
             out.println("</body>");
@@ -142,6 +145,7 @@ public class TestResultsHistory extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
+    
+    
 }

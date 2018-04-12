@@ -240,7 +240,7 @@ public class AGDatabase {
                 ResultSet rs = stat.executeQuery(
                 "SELECT x.User_id, Username, " +
                 "CASE WHEN Y.user_id IS NULL THEN 'N/A' " +
-                "ELSE Concat(ROUND(AVG(score),2),'%') " +
+                "ELSE ROUND(AVG(score),2) " +
                 "END AS 'Average Score' " +
                 "FROM users AS x LEFT JOIN submissions AS y ON x.user_id=y.user_id " +
                 "GROUP BY x.user_id,username;");
@@ -458,8 +458,12 @@ public class AGDatabase {
             try {
                 //generate sql statement
                 PreparedStatement pstat = conn.prepareStatement(
-                        "SELECT * FROM users "
-                       +"WHERE user_id = ?");
+                        "SELECT x.user_id,username,role, " +
+                        "COUNT(submission_id) AS quizzes_taken, " +
+                        "ROUND(AVG(score),2) AS Score FROM users AS x " +
+                        "LEFT JOIN submissions AS y ON x.user_id=y.user_id " +
+                        "WHERE x.user_id = ? "+
+                        "GROUP BY x.user_id ");
                 
                 //add parameters specified by user
                 pstat.setInt(1, userId);
@@ -474,7 +478,10 @@ public class AGDatabase {
                     //set user object to corresponding user
                     user = new User(Integer.parseInt(rs.getString("user_id")),
                                     rs.getString("username"),
-                                    rs.getString("role"));
+                                    rs.getString("role"),
+                                    rs.getString("quizzes_taken"),
+                                    rs.getString("score")
+                                    );
                     user.setValid(true);
                 }                
             }
