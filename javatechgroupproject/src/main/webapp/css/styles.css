@@ -8,7 +8,7 @@ body{
 	font-size: 20px;
 	color : gray;
 	margin-top: 4%;
-	margin-bottom:8%;
+	margin-bottom:5%;
 }
 
 table {
@@ -328,4 +328,18 @@ h2{
 	font-weight:bold;
 	display: inline-block;
 	min-width:120px;
+}
+
+.homeIcon{
+    font-size:1250%;
+    color: #5b985b;
+}
+
+.homeIcon:hover {
+    color: #ad3636 !important;
+}
+
+.col-sm-3 a, .col-sm-4 a{
+	color:#ad3636 !important;
+	font-weight:bold !important;
 }

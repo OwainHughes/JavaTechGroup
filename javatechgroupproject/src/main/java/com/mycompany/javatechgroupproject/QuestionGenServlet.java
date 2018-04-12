@@ -103,6 +103,14 @@ public class QuestionGenServlet extends HttpServlet {
             out.println("<button class=\"headerButton\">Home</button></div>");
             out.println("<div id=\"headerLine\"></div>");
             
+            
+            out.println("<div class = \"tabGUI\">");
+            
+            //print page decriptions
+            out.println("<h2><span class=\"glyphicon glyphicon-question-sign\"></span>  Quiz <span class=\"h2HL\"></span></h1>");
+            out.println("<p class=\"pageDescription\">Complete the following 20 questions. </p>");
+            out.println("</div>");
+            
             for(int i = 0; i < 20; i++)
             {                
                 int r = rand.nextInt(3) + 1;

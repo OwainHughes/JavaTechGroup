@@ -460,7 +460,7 @@ public class AGDatabase {
                 PreparedStatement pstat = conn.prepareStatement(
                         "SELECT x.user_id,username,role, " +
                         "COUNT(submission_id) AS quizzes_taken, " +
-                        "ROUND(AVG(score),2) AS Score FROM users AS x " +
+                        "IFNULL(ROUND(AVG(score),2),'N/A') AS Score FROM users AS x " +
                         "LEFT JOIN submissions AS y ON x.user_id=y.user_id " +
                         "WHERE x.user_id = ? "+
                         "GROUP BY x.user_id ");

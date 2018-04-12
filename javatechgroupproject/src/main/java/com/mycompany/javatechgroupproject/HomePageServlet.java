@@ -66,18 +66,31 @@ public class HomePageServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Home</title>");
-            out.println("<link href=\"css/styles.css\" rel=\"stylesheet\" type=\"text/css\" />");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"/>");
+            out.println("<title>Questionaire</title>");  
+            out.println("<link href=\"css/styles.css\" type=\"text/css\" rel=\"stylesheet\"/>");
+            out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js\"></script>");          
+            out.println("<script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"></script>");
+            out.println("<link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"></link>");
             out.println("</head>");
             out.println("<body>");
             out.println(navBarString);
+            
+            //print page decriptions
+            out.println("<div class = \"tabGUI\">");
+            out.println("<h2>  Welcome, "+user.getUsername()+"</h1>");
+            out.println("<p class=\"pageDescription\">Please find above your main links for the site, here you have access to all services offered to your role.\n" +
+            "\n" +
+            "looking for help ? please find information on the user guide page, it contains instructions on how to perform tasks relevant to your role. </p>");
+            out.println("</div>");
+            
+            //print icons
+            out.println(HTMLTemplate.getHomePageIcons(user));
+            
             out.println("</body>");
             out.println("</html>");
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -114,6 +127,6 @@ public class HomePageServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
