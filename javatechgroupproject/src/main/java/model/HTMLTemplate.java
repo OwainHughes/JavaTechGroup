@@ -11,39 +11,37 @@ package model;
  */
 public class HTMLTemplate {
     
-    String htmlNavBar;
+    String htmlNavBar = "";
     
-    public HTMLTemplate(String role, int id, String currentPage)
+    public HTMLTemplate(String userName, String role, int id, String currentPage)
     {
-        htmlNavBar = "<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\"/>";
+        htmlNavBar += "<span class=\"glyphicon glyphicon-user username\">"+userName+"</span>";
+        htmlNavBar += "<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\"/>";
+        htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/LogoutServlet';\">Log Out</button>";
         if(role.equals("STUDENT"))
-        {
-            htmlNavBar += "<button class=\"headerButton\">Log Out</button>";
+        {            
             htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/QuestionGenServlet';\">Take a test</button>";
             htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/TestResultsHistory?id="+id+"';\">Test History</button>";
-            htmlNavBar += "<button class=\"headerButton\">User Guide</button>";
-            htmlNavBar += "<button class=\"headerButton\">Home</button>";
+            
         }
         else if(role.equals("ADMINISTRATOR"))
-        {
-            htmlNavBar += "<button class=\"headerButton\">Log Out</button>";
-            htmlNavBar += "<button class=\"headerButton\">User Management</button>";
-            htmlNavBar += "<button class=\"headerButton\">Test History</button>";
-            htmlNavBar += "<button class=\"headerButton\">User Guide</button>";
-            htmlNavBar += "<button class=\"headerButton\">Home</button>";
+        {            
+            htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/RegisterUsersServlet';\">User Management</button>";
+            htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";
+                        
         }
         else if(role.equals("INSTRUCTOR"))
-        {
-            htmlNavBar += "<button class=\"headerButton\">Log Out</button>";
-            htmlNavBar += "<button class=\"headerButton\">dictionary</button>";
-            htmlNavBar += "<button class=\"headerButton\">Test History</button>";
-            htmlNavBar += "<button class=\"headerButton\">User Guide</button>";
-            htmlNavBar += "<button class=\"headerButton\">Home</button>";
+        {            
+            htmlNavBar += "<button class=\"headerButton\" onclick = \" location.href = '/javatecjgroupproject/DictionaryServlet';\">Dictionary</button>";
+            htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";
+                        
         }
         else
         {
             
         }
+        //htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatecjgroupproject/UserGuideServlet';\">User Guide</button>";
+        htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/HomePageServlet';\">Home</button>";
         htmlNavBar += "</div>";
         htmlNavBar += "<div id=\"headerLine\"></div>";
     }

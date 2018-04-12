@@ -49,7 +49,7 @@ public class TestResultsHistory extends HttpServlet {
         {
             Logger.getLogger(HomePageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(userID != urlID)
+        if(userID != urlID || (user.getRole().equals("ADMINISTRATOR") || user.getRole().equals("INSTRUCTORS")))
         {
             response.sendRedirect("/javatechgroupproject/HomePageServlet");            
         }

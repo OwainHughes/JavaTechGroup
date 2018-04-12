@@ -34,18 +34,7 @@ public class LogoutServlet extends HttpServlet {
         
         eraseCookie(request, response);
         
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LogoutServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LogoutServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        response.sendRedirect("/javatechgroupproject/index.xhtml");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -93,11 +82,10 @@ public class LogoutServlet extends HttpServlet {
         if(cookies != null)
         {
             for(int i = 0; i < cookies.length; i++)
-            {
-                cookies[i].setValue("");
-                cookies[i].setPath("/");
+            {                
                 cookies[i].setMaxAge(0);
                 response.addCookie(cookies[i]);
+                System.out.println("Cookie set to exipre");
             }
         }
     }

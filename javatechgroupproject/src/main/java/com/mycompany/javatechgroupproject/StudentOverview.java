@@ -97,7 +97,7 @@ public class StudentOverview extends HttpServlet {
             User user = UserAuthentication.CheckSession(request, response);
 
             //if user is valid, process request
-            if(user.isValid())
+            if(user.isValid() && (user.getRole().equals("ADMINISTRATOR") || user.getRole().equals("INSTRUCTOR")))
             {
                 processRequest(request,response,user.getUsername());
             }

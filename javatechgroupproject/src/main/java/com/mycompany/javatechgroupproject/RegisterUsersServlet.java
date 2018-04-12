@@ -196,13 +196,13 @@ public class RegisterUsersServlet extends HttpServlet {
             User user = UserAuthentication.CheckSession(request, response);
 
             //if user is valid, process request
-            if(user.getUserid()>-1)
+            if(user.getRole().equals("ADMINISTRATOR"))
             {
                 processRequest(request,response,user.getUsername());
             }
             else
             {
-                response.sendRedirect("index.xhtml");
+                response.sendRedirect("HomePageServlet");
             }
         }
         catch (ClassNotFoundException ex) 

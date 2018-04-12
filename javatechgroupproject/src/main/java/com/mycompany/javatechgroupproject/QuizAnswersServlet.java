@@ -42,7 +42,20 @@ public class QuizAnswersServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
              AGDatabase db = new AGDatabase();
-                          
+             
+            int submission_id = Integer.parseInt(request.getParameter("id"));
+            Submission s = db.getSubmissionById(submission_id);
+            int score = s.getScore();
+            User u = db.getUserById(s.getUserId());
+            
+            User user = UserAuthentication.CheckSession(request, response);
+
+            //if user is valid, process request
+            if(user.getUserid() != u.getUserid())
+            {
+                response.sendRedirect("HomePageServlet");
+            }
+            
             
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -70,10 +83,10 @@ public class QuizAnswersServlet extends HttpServlet {
             out.println("<div class=\"tabGUI\">");
             
             //get id of current quiz
-            int submission_id = Integer.parseInt(request.getParameter("id"));
+           /* int submission_id = Integer.parseInt(request.getParameter("id"));
             Submission s = db.getSubmissionById(submission_id);
             int score = s.getScore();
-            User u = db.getUserById(s.getUserId());
+            User u = db.getUserById(s.getUserId());*/
             
             //print page decriptions
             out.println("<h2><span class=\"glyphicon glyphicon-list-alt\"></span>  Answers <span class=\"h2HL\"></span></h1>");

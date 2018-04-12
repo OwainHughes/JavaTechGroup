@@ -192,13 +192,13 @@ public class DictionaryServlet extends HttpServlet {
             User user = UserAuthentication.CheckSession(request, response);
 
             //if user is valid, process request
-            if(user.isValid())
+            if(user.getRole().equals("INSTRUCTOR"))
             {
                 processRequest(request,response,user.getUsername());
             }
             else
             {
-                response.sendRedirect("index.xhtml");
+                response.sendRedirect("HomePageServlet");
             }
         }
         catch (ClassNotFoundException ex) 

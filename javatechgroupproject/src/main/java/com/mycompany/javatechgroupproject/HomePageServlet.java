@@ -46,13 +46,18 @@ public class HomePageServlet extends HttpServlet {
             role = user.getRole();
             userName = user.getUsername();
             userID = user.getUserid();
+            if(!user.isValid())
+            {
+                response.sendRedirect("/javatechgroupproject/index.xhtml");
+            }
         }
+        
         catch (ClassNotFoundException ex) 
         {
             Logger.getLogger(HomePageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        HTMLTemplate navBar = new HTMLTemplate(role, userID,  "THIS IS FOR CURRENT PAGE/TODO");
+        HTMLTemplate navBar = new HTMLTemplate(userName, role, userID,  "THIS IS FOR CURRENT PAGE/TODO");
         String navBarString = navBar.getNavBar();
         
         response.setContentType("text/html;charset=UTF-8");

@@ -167,19 +167,6 @@ public class LoginServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    private void eraseCookie(HttpServletRequest request, HttpServletResponse response)
-    {
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null)
-        {
-            for(int i = 0; i < cookies.length; i++)
-            {
-                cookies[i].setValue("");
-                cookies[i].setPath("/");
-                cookies[i].setMaxAge(0);
-                response.addCookie(cookies[i]);
-            }
-        }
-    }
+    
 
 }
