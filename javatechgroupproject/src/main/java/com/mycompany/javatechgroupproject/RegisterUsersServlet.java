@@ -45,7 +45,7 @@ public class RegisterUsersServlet extends HttpServlet {
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(RegisterUsersServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            HTMLTemplate navBar = new HTMLTemplate(user);
+            HTMLTemplate navBar = new HTMLTemplate(user,getClass().getSimpleName());
             String navBarString = navBar.getNavBar();
             
             out.println("<!DOCTYPE html>");

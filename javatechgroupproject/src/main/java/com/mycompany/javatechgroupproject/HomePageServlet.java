@@ -57,7 +57,7 @@ public class HomePageServlet extends HttpServlet {
             Logger.getLogger(HomePageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        HTMLTemplate navBar = new HTMLTemplate(user);
+        HTMLTemplate navBar = new HTMLTemplate(user,getClass().getSimpleName());
         String navBarString = navBar.getNavBar();
         
         response.setContentType("text/html;charset=UTF-8");

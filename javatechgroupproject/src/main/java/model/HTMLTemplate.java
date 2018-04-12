@@ -13,41 +13,76 @@ public class HTMLTemplate {
     
     String htmlNavBar = "";
     
-    public HTMLTemplate(User user)
+    public HTMLTemplate(User user,String activeTab)
     {
+        
         //extract user data to ensure correct nav bar is shown
         String role = user.getRole();
         String userName = user.getUsername();
         int id = user.getUserid();
         
         //add features available to all
-        htmlNavBar += "<span class=\"glyphicon glyphicon-user username\">"+userName+"</span>";
+        //htmlNavBar += "<span class=\"glyphicon glyphicon-user username\">"+userName+"</span>";
         htmlNavBar += "<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\"/>";
         htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/LogoutServlet';\">Log Out</button>";
-        htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/QuestionGenServlet';\">Take a test</button>";
+        
+        htmlNavBar += "<button class=\"headerButton";
+        if(activeTab.equals("QuestionGenServlet"))
+        {
+            htmlNavBar += " activeTab";
+        }
+        htmlNavBar += "\" onclick=\"location.href = '/javatechgroupproject/QuestionGenServlet';\">Take a Test</button>";
 
+                
         if(role.equals("STUDENT"))
-        {            
-            htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/TestResultsHistory?id="+id+"';\">Test History</button>";
+        {
+            
+            htmlNavBar += "<button class=\"headerButton";
+            if(activeTab.equals("TestResultsHistory"))
+            {
+                htmlNavBar += " activeTab";
+            }
+            htmlNavBar+= "\" onclick=\"location.href = '/javatechgroupproject/TestResultsHistory?id="+id+"';\">Test History</button>";
         }
         else if(role.equals("ADMINISTRATOR"))
         {            
-            htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/RegisterUsersServlet';\">User Management</button>";
-            htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";
+            //add RegisterUsers Tab
+            htmlNavBar += "<button class=\"headerButton";
+            if(activeTab.equals("RegisterUsersServlet"))
+                htmlNavBar += " activeTab";
+            
+            htmlNavBar+="\" onclick = \"location.href = '/javatechgroupproject/RegisterUsersServlet';\">User Management</button>";
+            
+            //add StudentOverview Tab
+            htmlNavBar += "<button class=\"headerButton";
+            if(activeTab.equals("StudentOverview"))
+                htmlNavBar += " activeTab";
+            
+           htmlNavBar += "\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";
                         
         }
         else if(role.equals("INSTRUCTOR"))
         {            
-            htmlNavBar += "<button class=\"headerButton\" onclick = \" location.href = '/javatechgroupproject/DictionaryServlet';\">Dictionary</button>";
-            htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";                        
-        }
-        else
-        {
+            //add dictionary servlet
+            htmlNavBar += "<button class=\"headerButton";
+            if(activeTab.equals("DictionaryServlet"))
+                htmlNavBar += " activeTab";
+            htmlNavBar+="\" onclick = \" location.href = '/javatechgroupproject/DictionaryServlet';\">Dictionary</button>";
             
+            //add StudentOverview Tab
+            htmlNavBar += "<button class=\"headerButton";
+            if(activeTab.equals("StudentOverview"))
+                htmlNavBar += " activeTab";
+            
+            htmlNavBar += "\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";
+
         }
         
         //add a home button to all
-        htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/HomePageServlet';\">Home</button>";
+        htmlNavBar += "<button class=\"headerButton";
+        if(activeTab.equals("HomePageServlet"))
+                htmlNavBar += " activeTab";
+        htmlNavBar += "\" onclick=\"location.href = '/javatechgroupproject/HomePageServlet';\">Home</button>";
         htmlNavBar += "</div>";
         htmlNavBar += "<div id=\"headerLine\"></div>";
     }

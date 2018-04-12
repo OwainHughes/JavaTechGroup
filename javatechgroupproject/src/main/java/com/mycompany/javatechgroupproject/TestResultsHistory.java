@@ -63,7 +63,8 @@ public class TestResultsHistory extends HttpServlet {
              AGDatabase db = new AGDatabase();
             
             
-            HTMLTemplate navBar = new HTMLTemplate(user);
+            HTMLTemplate navBar = new HTMLTemplate(user,getClass().getSimpleName());
+            System.out.println(getClass().getSimpleName());
             String navBarString = navBar.getNavBar();
                           
             

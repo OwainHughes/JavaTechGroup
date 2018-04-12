@@ -193,15 +193,11 @@ h1{
 }
 
 
-.headerButton:hover, #currentTab
+.headerButton:hover, .activeTab
 {
 
 	color:white;
 	background-color:#ad3636;
-}
-
-#headerDiv{
-	margin-right:5%;
 }
 
 #loginForm

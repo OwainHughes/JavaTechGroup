@@ -52,13 +52,12 @@ public class QuizAnswersServlet extends HttpServlet {
             User user = UserAuthentication.CheckSession(request, response);
 
             //if user is valid, process request
-            if(user.getUserid() != u.getUserid())
+            if(!(user.getUserid() == u.getUserid()  || (user.getRole().equals("ADMINISTRATOR") || user.getRole().equals("INSTRUCTOR"))))
             {
                 response.sendRedirect("HomePageServlet");
             }
             
-            
-            HTMLTemplate navBar = new HTMLTemplate(user);
+            HTMLTemplate navBar = new HTMLTemplate(user,getClass().getSimpleName());
             String navBarString = navBar.getNavBar();
             
             /* TODO output your page here. You may use following sample code. */

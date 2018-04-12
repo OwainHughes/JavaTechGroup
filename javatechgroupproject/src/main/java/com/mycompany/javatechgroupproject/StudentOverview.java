@@ -41,9 +41,8 @@ public class StudentOverview extends HttpServlet {
             AGDatabase db = new AGDatabase();
              
             User user = UserAuthentication.CheckSession(request, response);
-            HTMLTemplate navBar = new HTMLTemplate(user);
+            HTMLTemplate navBar = new HTMLTemplate(user,getClass().getSimpleName());
             String navBarString = navBar.getNavBar();
-                          
             
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");

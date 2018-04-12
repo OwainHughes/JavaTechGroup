@@ -85,7 +85,7 @@ public class QuestionGenServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             User user = UserAuthentication.CheckSession(request, response);
-            HTMLTemplate navBar = new HTMLTemplate(user);
+            HTMLTemplate navBar = new HTMLTemplate(user,getClass().getSimpleName());
             String navBarString = navBar.getNavBar();
             
             /* TODO output your page here. You may use following sample code. */
