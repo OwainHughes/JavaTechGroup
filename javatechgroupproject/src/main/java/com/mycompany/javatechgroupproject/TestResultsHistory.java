@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.HTMLTemplate;
 import model.User;
 
 /**
@@ -49,7 +50,8 @@ public class TestResultsHistory extends HttpServlet {
         {
             Logger.getLogger(HomePageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(userID != urlID || (user.getRole().equals("ADMINISTRATOR") || user.getRole().equals("INSTRUCTORS")))
+        //check to see if they have access to certain result 
+        if(!(userID == urlID || (user.getRole().equals("ADMINISTRATOR") || user.getRole().equals("INSTRUCTORS"))))
         {
             response.sendRedirect("/javatechgroupproject/HomePageServlet");            
         }
@@ -57,6 +59,10 @@ public class TestResultsHistory extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
              AGDatabase db = new AGDatabase();
+            
+            
+            HTMLTemplate navBar = new HTMLTemplate(user);
+            String navBarString = navBar.getNavBar();
                           
             
             /* TODO output your page here. You may use following sample code. */
@@ -72,15 +78,9 @@ public class TestResultsHistory extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             
-            //print current user
-            out.println("<span class=\"glyphicon glyphicon-user username\">"+username+"</span>");
+            
                         
-            //header banner
-            out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
-            out.println("<button class=\"headerButton\" >Test History</button>");
-            out.println("<button class=\"headerButton\" id=\"currentTab\">Dictionary</button>");
-            out.println("<button class=\"headerButton\">Home</button></div>");
-            out.println("<div id=\"headerLine\"></div>");
+            out.println(navBarString);
             
             out.println("<div class=\"tabGUI\">");
             

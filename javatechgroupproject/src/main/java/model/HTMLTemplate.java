@@ -13,8 +13,12 @@ public class HTMLTemplate {
     
     String htmlNavBar = "";
     
-    public HTMLTemplate(String userName, String role, int id, String currentPage)
+    public HTMLTemplate(User user)
     {
+        String role = user.getRole();
+        String userName = user.getUsername();
+        int id = user.getUserid();
+        
         htmlNavBar += "<span class=\"glyphicon glyphicon-user username\">"+userName+"</span>";
         htmlNavBar += "<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\"/>";
         htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/LogoutServlet';\">Log Out</button>";
@@ -32,7 +36,7 @@ public class HTMLTemplate {
         }
         else if(role.equals("INSTRUCTOR"))
         {            
-            htmlNavBar += "<button class=\"headerButton\" onclick = \" location.href = '/javatecjgroupproject/DictionaryServlet';\">Dictionary</button>";
+            htmlNavBar += "<button class=\"headerButton\" onclick = \" location.href = '/javatechgroupproject/DictionaryServlet';\">Dictionary</button>";
             htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";
                         
         }

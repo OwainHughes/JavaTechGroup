@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.HTMLTemplate;
 import model.User;
 
 /**
@@ -38,6 +39,15 @@ public class RegisterUsersServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            User user = null;
+            try {
+                user = UserAuthentication.CheckSession(request, response);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(RegisterUsersServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            HTMLTemplate navBar = new HTMLTemplate(user);
+            String navBarString = navBar.getNavBar();
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -50,15 +60,9 @@ public class RegisterUsersServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             
-            //print current user
-            out.println("<span class=\"glyphicon glyphicon-user username\">"+username+"</span>");
+           
             
-            //header banner
-            out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
-            out.println("<button class=\"headerButton\" >Test History</button>");
-            out.println("<button class=\"headerButton\" id=\"currentTab\">User Details</button>");
-            out.println("<button class=\"headerButton\">Home</button></div>");
-            out.println("<div id=\"headerLine\"></div>");
+            out.println(navBarString);
             
             out.println("<div class=\"tabGUI\">");
             

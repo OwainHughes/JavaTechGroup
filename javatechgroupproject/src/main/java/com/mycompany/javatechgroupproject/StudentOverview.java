@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.HTMLTemplate;
 import model.User;
 
 /**
@@ -37,7 +38,11 @@ public class StudentOverview extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-             AGDatabase db = new AGDatabase();
+            AGDatabase db = new AGDatabase();
+             
+            User user = UserAuthentication.CheckSession(request, response);
+            HTMLTemplate navBar = new HTMLTemplate(user);
+            String navBarString = navBar.getNavBar();
                           
             
             /* TODO output your page here. You may use following sample code. */
@@ -53,15 +58,10 @@ public class StudentOverview extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             
-            //print current user
-            out.println("<span class=\"glyphicon glyphicon-user username\">"+username+"</span>");
+         
                         
             //header banner
-            out.println("<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\">");
-            out.println("<button class=\"headerButton\" >Test History</button>");
-            out.println("<button class=\"headerButton\" id=\"currentTab\">Dictionary</button>");
-            out.println("<button class=\"headerButton\">Home</button></div>");
-            out.println("<div id=\"headerLine\"></div>");
+            out.println(navBarString);
             
             out.println("<div class=\"tabGUI\">");
             out.println("<h2><span class=\"glyphicon glyphicon-stats\"></span>  Student Performance Overview</h1>");
