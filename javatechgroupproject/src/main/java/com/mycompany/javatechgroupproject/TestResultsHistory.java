@@ -51,7 +51,7 @@ public class TestResultsHistory extends HttpServlet {
             Logger.getLogger(HomePageServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         //check to see if they have access to certain result 
-        if(!(userID == urlID || (user.getRole().equals("ADMINISTRATOR") || user.getRole().equals("INSTRUCTORS"))))
+        if(!(userID == urlID || (user.getRole().equals("ADMINISTRATOR") || user.getRole().equals("INSTRUCTOR"))))
         {
             response.sendRedirect("/javatechgroupproject/HomePageServlet");            
         }

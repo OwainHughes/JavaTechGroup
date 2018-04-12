@@ -15,18 +15,20 @@ public class HTMLTemplate {
     
     public HTMLTemplate(User user)
     {
+        //extract user data to ensure correct nav bar is shown
         String role = user.getRole();
         String userName = user.getUsername();
         int id = user.getUserid();
         
+        //add features available to all
         htmlNavBar += "<span class=\"glyphicon glyphicon-user username\">"+userName+"</span>";
         htmlNavBar += "<div id=\"headerDiv\"><img src=\"banner2.png\" id=\"draigImage\"/>";
         htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/LogoutServlet';\">Log Out</button>";
+        htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/QuestionGenServlet';\">Take a test</button>";
+
         if(role.equals("STUDENT"))
         {            
-            htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/QuestionGenServlet';\">Take a test</button>";
             htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/TestResultsHistory?id="+id+"';\">Test History</button>";
-            
         }
         else if(role.equals("ADMINISTRATOR"))
         {            
@@ -37,14 +39,14 @@ public class HTMLTemplate {
         else if(role.equals("INSTRUCTOR"))
         {            
             htmlNavBar += "<button class=\"headerButton\" onclick = \" location.href = '/javatechgroupproject/DictionaryServlet';\">Dictionary</button>";
-            htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";
-                        
+            htmlNavBar += "<button class=\"headerButton\" onclick = \"location.href = '/javatechgroupproject/StudentOverview';\" >Student Overview</button>";                        
         }
         else
         {
             
         }
-        //htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatecjgroupproject/UserGuideServlet';\">User Guide</button>";
+        
+        //add a home button to all
         htmlNavBar += "<button class=\"headerButton\" onclick=\"location.href = '/javatechgroupproject/HomePageServlet';\">Home</button>";
         htmlNavBar += "</div>";
         htmlNavBar += "<div id=\"headerLine\"></div>";
