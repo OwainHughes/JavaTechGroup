@@ -48,9 +48,10 @@ public class LoginServlet extends HttpServlet {
 
         // Add cookies to response.
         response.addCookie(sessionCookie);
-
-        reply = "Session Id:" + sessionid;
+        response.sendRedirect("/javatechgroupproject/HomePageServlet");
         
+        /*reply = "Session Id:" + sessionid;
+                
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {           
             out.println("<!DOCTYPE html>");
@@ -62,7 +63,7 @@ public class LoginServlet extends HttpServlet {
             out.println("<h1>User:" + reply + "</h1>");
             out.println("</body>");
             out.println("</html>");
-        }
+        }*/
     }
 
     /**
@@ -128,6 +129,8 @@ public class LoginServlet extends HttpServlet {
                 
                 //pass to process request
                 processRequest(request, response, userName, sessionid);
+                
+                
             }
             else
             {

@@ -45,10 +45,17 @@
         <servlet-class>com.mycompany.javatechgroupproject.QuizAnswersServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>TestResultsHistory</servlet-name>
+        <servlet-class>com.mycompany.javatechgroupproject.TestResultsHistory</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StudentOverview</servlet-name>
+        <servlet-class>com.mycompany.javatechgroupproject.StudentOverview</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>HomePageServlet</servlet-name>
         <servlet-class>com.mycompany.javatechgroupproject.HomePageServlet</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>DictionaryServlet</servlet-name>
         <url-pattern>/DictionaryServlet</url-pattern>
@@ -92,6 +99,14 @@
     <servlet-mapping>
         <servlet-name>QuizAnswersServlet</servlet-name>
         <url-pattern>/QuizAnswersServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestResultsHistory</servlet-name>
+        <url-pattern>/TestResultsHistory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentOverview</servlet-name>
+        <url-pattern>/StudentOverview</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>HomePageServlet</servlet-name>

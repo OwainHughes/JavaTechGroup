@@ -34,6 +34,22 @@ public class TestResultsHistory extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response, String username)
             throws ServletException, IOException {
+        
+        User user = null;
+        int userID = 0;
+        
+        try 
+        {
+            user = UserAuthentication.CheckSession(request, response);
+            
+            userID = user.getUserid();
+        }
+        catch (ClassNotFoundException ex) 
+        {
+            Logger.getLogger(HomePageServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
         try (PrintWriter out = response.getWriter()) {
             
              AGDatabase db = new AGDatabase();
