@@ -671,7 +671,7 @@ public class AGDatabase {
         }
     }
     
-    public ArrayList<Word> getWordsList()
+    public ArrayList<Word> getWordsList(int userId)
     {        
         ArrayList<Word> wordList = new ArrayList<Word>();
         
@@ -679,18 +679,46 @@ public class AGDatabase {
             Connection conn = SimpleDataSource.getConnection();
             try {                
                 Statement stat = conn.createStatement();
+                
+                //check if user has at least 1 submission
+                PreparedStatement pstat = conn.prepareStatement(
+                        "select r.dictionary_id,welsh_word,english_word,gender,avg(user_answer=correct_answer) \n" +
+                        "from results as r \n" +
+                        "inner join submissions as s on r.submission_id=s.submission_id\n" +
+                        "inner join dictionary as d on d.dictionary_id=r.dictionary_id\n" +
+                        "where user_id = ? \n" +
+                        "group by dictionary_id\n" +
+                        "order by avg(user_answer=correct_answer) asc\n" +
+                        "limit 10");     
+                pstat.setInt(1, userId);
+                
+                ResultSet isInSubmissions = pstat.executeQuery();
+                
+                while(isInSubmissions.next())
+                {
+                    int id = isInSubmissions.getInt("dictionary_id");
+                    String welshWord = isInSubmissions.getString("welsh_word");
+                    String englishWord = isInSubmissions.getString("english_word");
+                    String gender = isInSubmissions.getString("gender");
+
+                    Word tempWord = new Word(id, welshWord, englishWord, gender);
+
+                    wordList.add(tempWord);
+                } 
+                
                 ResultSet rs = stat.executeQuery("SELECT * FROM dictionary;");                
-            while(rs.next())
-            {
-                int id = rs.getInt("dictionary_id");
-                String welshWord = rs.getString("welsh_word");
-                String englishWord = rs.getString("english_word");
-                String gender = rs.getString("gender");
                 
-                Word tempWord = new Word(id, welshWord, englishWord, gender);
-                
-                wordList.add(tempWord);
-            }            
+                while(rs.next() && wordList.size()<20)
+                {
+                    int id = rs.getInt("dictionary_id");
+                    String welshWord = rs.getString("welsh_word");
+                    String englishWord = rs.getString("english_word");
+                    String gender = rs.getString("gender");
+
+                    Word tempWord = new Word(id, welshWord, englishWord, gender);
+
+                    wordList.add(tempWord);
+                }            
             Collections.shuffle(wordList);
             }
             finally

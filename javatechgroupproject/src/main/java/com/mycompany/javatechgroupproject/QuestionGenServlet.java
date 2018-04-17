@@ -78,14 +78,15 @@ public class QuestionGenServlet extends HttpServlet {
             
             AGDatabase dbConn = new AGDatabase();
             ArrayList<Word> wordList = new ArrayList<Word>();
-            wordList = dbConn.getWordsList();
+            
             Random rand = new Random();
             
             response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
             User user = UserAuthentication.CheckSession(request, response);
-            HTMLTemplate navBar = new HTMLTemplate(user,getClass().getSimpleName());
+            HTMLTemplate navBar = new HTMLTemplate(user,"");
+            wordList = dbConn.getWordsList(user.getUserid());
             String navBarString = navBar.getNavBar();
             
             /* TODO output your page here. You may use following sample code. */
