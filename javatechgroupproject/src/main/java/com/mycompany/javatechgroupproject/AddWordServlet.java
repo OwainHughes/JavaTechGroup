@@ -73,6 +73,7 @@ public class AddWordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        //retrive all the values for the new word 
         String welshword = request.getParameter("welshword");
         String englishword = request.getParameter("englishword");
         String gender = request.getParameter("gender");
@@ -82,6 +83,7 @@ public class AddWordServlet extends HttpServlet {
             String[] columns = {"welsh_word","english_word","gender"};
             String[] values = {welshword,englishword,gender};
             
+            //condence data to arraylist to improve efficiency, connection only has to be opened/closed once
             ArrayList<String[]> rows = new ArrayList<String[]>();
             rows.add(values);
             

@@ -114,6 +114,7 @@ public class QuestionGenServlet extends HttpServlet {
             out.println("<p class=\"pageDescription\">Complete the following 20 questions. </p>");
             out.println("</div>");
             
+            //loop through and display the 20 qestions generated 
             for(int i = 0; i < 20; i++)
             {                
                 int r = rand.nextInt(3) + 1;
@@ -143,18 +144,20 @@ public class QuestionGenServlet extends HttpServlet {
         //processRequest(request, response);
     }
     
+    //generate one of three types of question available for a word
     public String getQuestion(Word word, int questNum, int r)
     {
         String toReturn = "";
         
         
-        
+        //asking for the gender of a welsh word
         if(r == 3)
         {            
             toReturn += "<h1>Q" + (questNum) + ") What is the gender of the word \"" + word.getWelshWord() + "\"?</h1>";
             toReturn += "<input type='radio' class=\"gender\" name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='male'><span class=\"gender\">Male</span>";
             toReturn += "<input type='radio' class=\"gender\" name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='female'><span class=\"gender\">Female</span>";
         }
+        //asking for the english word and gender of a welsh word
         else if(r == 2)
         {
             toReturn += "<h1>Q" + (questNum) + ") What is the English word for \"" + word.getWelshWord() + "\"?</h1>";
@@ -162,8 +165,10 @@ public class QuestionGenServlet extends HttpServlet {
             toReturn += "<input type='radio' class=\"gender\" name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='male'><span class=\"gender\">Male</span>";
             toReturn += "<input type='radio' class=\"gender\" name=\"questRadio" + questNum + "\" wordId=\"word"+ word.getId() + "\" value='female'><span class=\"gender\">Female</span>";
         }
+        //ask for the welsh translation of an english word
         else
         {
+            //tell the user which gender they are being asked for
             String gender = "";
             if(word.getGender().equals("male"))
             {

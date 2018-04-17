@@ -60,6 +60,10 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.mycompany.javatechgroupproject.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PageNotFoundServlet</servlet-name>
+        <servlet-class>com.mycompany.javatechgroupproject.PageNotFoundServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DictionaryServlet</servlet-name>
         <url-pattern>/DictionaryServlet</url-pattern>
@@ -120,9 +124,17 @@
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/LogoutServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PageNotFoundServlet</servlet-name>
+        <url-pattern>/PageNotFoundServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/PageNotFoundServlet</location>
+    </error-page>
 </web-app>
