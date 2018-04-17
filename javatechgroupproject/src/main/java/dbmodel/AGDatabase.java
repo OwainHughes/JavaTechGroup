@@ -673,7 +673,8 @@ public class AGDatabase {
     
     public ArrayList<Word> getWordsList(int userId)
     {        
-        ArrayList<Word> wordList = new ArrayList<Word>();
+        ArrayList<Word> wordListQuiz = new ArrayList<Word>();
+        ArrayList<Word> wordListFull = new ArrayList<Word>();
         
         try {
             Connection conn = SimpleDataSource.getConnection();
@@ -694,6 +695,8 @@ public class AGDatabase {
                 
                 ResultSet isInSubmissions = pstat.executeQuery();
                 
+                String usedWords = "(";
+                
                 while(isInSubmissions.next())
                 {
                     int id = isInSubmissions.getInt("dictionary_id");
@@ -701,14 +704,26 @@ public class AGDatabase {
                     String englishWord = isInSubmissions.getString("english_word");
                     String gender = isInSubmissions.getString("gender");
 
+                    usedWords += id+",";
                     Word tempWord = new Word(id, welshWord, englishWord, gender);
-
-                    wordList.add(tempWord);
+                    
+                    wordListQuiz.add(tempWord);
                 } 
+                usedWords = usedWords.substring(0, usedWords.length()-1)+")";
                 
-                ResultSet rs = stat.executeQuery("SELECT * FROM dictionary;");                
+                //get remaining words from database
+                ResultSet rs;
+                if(wordListQuiz.size()==0)
+                {
+                    rs = stat.executeQuery("SELECT * FROM dictionary;");     
+                }
+                else
+                {
+                    rs = stat.executeQuery("SELECT * FROM dictionary WHERE dictionary_id NOT IN "+usedWords);   
+                }
                 
-                while(rs.next() && wordList.size()<20)
+                //add remaining words to wordListFull 
+                while(rs.next())
                 {
                     int id = rs.getInt("dictionary_id");
                     String welshWord = rs.getString("welsh_word");
@@ -717,9 +732,20 @@ public class AGDatabase {
 
                     Word tempWord = new Word(id, welshWord, englishWord, gender);
 
-                    wordList.add(tempWord);
+                    wordListFull.add(tempWord);
                 }            
-            Collections.shuffle(wordList);
+                Collections.shuffle(wordListFull);
+
+                //add add words to wordsListQuiz until list is of size 20
+                int i = 0;
+                while(wordListQuiz.size()<20)
+                {
+                    wordListQuiz.add(wordListFull.get(i));
+                    i++;
+                }
+                //randomise order
+                Collections.shuffle(wordListQuiz);
+            
             }
             finally
             {
@@ -728,7 +754,7 @@ public class AGDatabase {
         } catch (SQLException ex) {
             Logger.getLogger(AGDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return wordList;
+        return wordListQuiz;
     }
     
     
