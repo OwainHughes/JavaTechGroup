@@ -174,7 +174,7 @@ public class HTMLTemplate {
             icons+=("</a>");
             icons+=("</div>");
             icons+=("<div class=\"col-sm-3\">");
-            icons+=("<a href=\"/javatechgroupproject/TestResultsHistory?id="+user.getUserid()+"\">");
+            icons+=("<a href=\"/javatechgroupproject/UserGuide.pdf\">");
             icons+=("<span class=\"glyphicon glyphicon-info-sign homeIcon\"></span>");
             icons+=("<h4>User Guide</h4>");
             icons+=("</a>");
